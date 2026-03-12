@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Delivery's service</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <style>
+           @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700&display=swap'); 
+ 
+/* Variables */ 
+:root { 
+    --cafe: rgb(70, 46, 46); 
+    --cafeTranspartente: rgba(70, 46, 46, 0.95); 
+} 
+ 
+/* Diseños generales */ 
+body { 
+    box-sizing: border-box; 
+    padding: 13px; 
+    margin: 13px; 
+    font-family: 'Raleway', sans-serif; 
+    overflow-x: hidden; 
+    overflow-y: scroll; 
+
+} 
+body.dark {
+  background-color: #121212;
+  color: white;
+}
+
+.modob {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+  transition: all 0.3s ease;
+}
+
+#modob:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.6);
+}
+
+#modob:active {
+  transform: scale(0.95);
+}
+
+
+.precio
+{
+    color: #FA7E06;
+}
+.platillo
+{
+    height: 30px;
+    width: 30px;
+
+}
+ 
+h1 { 
+    font-size: 60px; 
+    font-weight: 500; 
+    margin-bottom: 10px; 
+    margin-top: 25px; 
+
+} 
+ 
+h2 { 
+    font-size: 40px; 
+    font-weight: 300; 
+    text-align: center; 
+    padding-top: 30px; 
+     color:#7E4207 ;
+} 
+ 
+h3 { 
+    font-size: 30px; 
+    font-weight: 500; 
+    text-align: center; 
+} 
+ 
+p { 
+    font-size: 20px; 
+    font-weight: 300; 
+    letter-spacing: 1px; 
+} 
+ 
+img { 
+    width: 20px; 
+    height: auto; 
+} 
+ 
+.botonTransparente { 
+    padding: 15px; 
+    margin-top: 25px; 
+    font-size: 17px; 
+    background-color: transparent; 
+    color: white; 
+    border: 1px solid white; 
+    transition: color 0.5s, background-color 0.5s; 
+} 
+ 
+.botonTransparente:hover { 
+    transition: all 0.5s; 
+    color: var(--cafe); 
+    background-color: white; 
+} 
+ 
+.botonNegro { 
+    border-radius: 5px; 
+    padding: 15px 30px; 
+    font-size: 15px; 
+    background-color: var(--cafe); 
+    color: white; 
+    transition: color 0.5s, background-color 0.5s; 
+} 
+ 
+.botonNegro:hover { 
+    transition: all 0.5s; 
+    color: var(--cafe); 
+    background: white; 
+} 
+ 
+ 
+/*Navegacion*/ 
+ 
+nav::-webkit-scrollbar { /*background*/ 
+    width: 2px; 
+    background-color: rgba(255, 255, 255, 0.5); 
+} 
+ 
+nav::-webkit-scrollbar-thumb { 
+    width: 2px; 
+    background-color: rgba(255, 255, 255, 0.3); 
+} 
+ 
+nav { 
+    border-radius: 10px; 
+    padding: 10px 0px 30px 0px; 
+    margin: 10px 10px 0px 0px;  /*10px 0px 10px 0px*/ 
+ 
+ 
+    position: fixed; 
+    z-index: 1; 
+    right: 0px; /*left*/ 
+ 
+    width: 90%; 
+    max-height: 650px; 
+    overflow-y: auto; 
+ 
+    backdrop-filter: blur(40px); 
+    color: white; 
+    background-color: rgba(24, 22, 54, 0.8); 
+ 
+    transition: width 1.5s, max-height 2s 1s; 
+} 
+ 
+.ocultarSeccionNav { 
+    width: 55px; 
+    max-height: 10px; 
+    overflow: hidden; 
+    border-radius: 20px; 
+    transition: width 1.5s, max-height 2s 1s, border-radius 2s; 
+} 
+ 
+.ocultarSeccionNav .seccionNav, 
+.ocultarSeccionNav h2 { 
+    transform: translateX(220px); 
+    transition: all 2s; 
+} 
+ 
+nav .header img { 
+    position: absolute; 
+    top: 12px; 
+    left: 14px; 
+    width: 25px; 
+    height: auto; 
+} 
+ 
+nav img { 
+    filter: invert(100%); 
+    width: auto; 
+    height: 25px; 
+} 
+ 
+nav h2 { 
+    padding: 0px; 
+    font-size: 23px; 
+    font-weight: 500; 
+    margin: 10px 0px 0px 0px; 
+} 
+ 
+nav p { 
+    font-size: 20px; 
+    font-weight: 500; 
+} 
+ 
+nav>div { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    flex-direction: column; 
+    gap: 50px; 
+} 
+ 
+nav .header {  
+    margin: 30px 0px; 
+} 
+ 
+nav .visible, 
+nav .darkMode { 
+    display: flex; 
+    align-items: center; 
+    height: 63px; 
+} 
+ 
+nav .visible p, 
+nav .darkMode p { 
+    margin-left: 20px; 
+    width: 175px; 
+} 
+ 
+nav .seccionNav { 
+    overflow: hidden; 
+    gap: 15px; 
+} 
+nav .oculto { 
+    height: 0px; 
+    transform: translateY(200px); 
+    transition: all 1s; 
+} 
+ 
+nav .mostrar { 
+    background-color: white; 
+    color: black; 
+    border-radius: 20px; 
+    width: 320px; 
+    transform: translateY(0px); 
+    transition: transform 1s; 
+} 
+ 
+nav .mostrar h4 { 
+    color: #4035db; 
+    font-size: 18px; 
+    font-weight: 400; 
+    margin: 22px 0px 0px 0px; 
+} 
+ 
+nav .mostrar .blanco, 
+nav .mostrar .gris { 
+    padding: 0px 15px; 
+} 
+ 
+nav .mostrar .blanco p, 
+nav .mostrar .gris p { 
+    padding: 5px 0px; 
+    font-size: 16px; 
+    font-weight: 500;
+margin: 10px; 
+    cursor: pointer; 
+    color: #313743; 
+} 
+ 
+nav .mostrar .blanco p:active, 
+nav .mostrar .gris p:active { 
+    font-weight: 700; 
+    color: #4035db; 
+} 
+ 
+nav .mostrar .gris { 
+    padding-top: 5px; 
+    padding-bottom: 5px; 
+    margin-top: 5px; 
+ 
+    border-radius: 20px; 
+    background-color: #e4eaf5; 
+} 
+ 
+nav .mostrar .RedesSociales { 
+    display: grid; 
+    margin: auto; 
+    align-items: center; 
+    grid-template-columns: 1fr 1fr; 
+    margin-bottom: 20px; 
+     
+} 
+ 
+nav .mostrar .RedesSociales img { 
+    filter: saturate(150%); 
+    width: 16px; 
+    height: auto; 
+} 
+ 
+ 
+nav .mostrar .RedesSociales>div { 
+    display: flex; 
+    align-items: center; 
+} 
+ 
+nav .mostrar .RedesSociales>div p { 
+    font-weight: 400; 
+    font-size: 16px; 
+} 
+ 
+.arriba{ 
+    transform: rotate(-180deg); 
+    transition: transform 1s; 
+} 
+.abajo{ 
+    transform: rotate(0deg); 
+    transition: transform 1s; 
+} 
+/* Diseños especificos */ 
+ 
+.medidasMain { 
+    height: 100vh; 
+    background-image: url('img/main.webp'); 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+ 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+} 
+ 
+.contenedorMain { 
+    display: flex; 
+    align-items: center; 
+    flex-direction: column; 
+ 
+    width: 520px; 
+    text-align: center; 
+    color: white; 
+    padding: 30px 40px; 
+    background-color: var(--cafeTranspartente); 
+} 
+ 
+.menuProductos { 
+    display: flex; 
+    margin: auto; 
+    width: 90%; 
+    position: relative; 
+    top: -30px; 
+    flex-wrap: wrap; 
+} 
+ 
+.menuProductos>div { 
+    flex: 1 1 150px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 20px; 
+    background-color: white; 
+    border-bottom: 1px solid black; 
+    border-right: 1px solid black; 
+    padding: 30px; 
+} 
+ 
+.menuProductos img { 
+    width: 40px; 
+} 
+ 
+.seccionProductos, 
+.nuevo { 
+    width: 90%; 
+    margin: auto; 
+} 
+ 
+.seccionProductos .contenedorProductos, 
+.nuevo .contenedorProductos { 
+    display: flex; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 30px; 
+} 
+ 
+.seccionProductos .contenedorProductos img, 
+.nuevo .contenedorProductos img { 
+    flex: 1 1 300px; 
+    width: 275px; 
+    height: 450px; 
+    border-radius: 10px; 
+} 
+ 
+.seccionProductos .contenedorProductos>div .seccionImagen::before { 
+    content: "recomendados"; 
+    position: absolute; 
+    font-size: 13px; 
+    background-color: var(--cafeTranspartente); 
+    color: white; 
+    padding: 5px; 
+    border-radius: 5px; 
+    letter-spacing: 1px; 
+} 
+ 
+.seccionProductos .contenedorProductos .seccionImagen { 
+    overflow: hidden; 
+    width: 275px; 
+    height: 450px; 
+} 
+ 
+.seccionProductos .contenedorProductos .seccionImagen p { 
+    font-size: 17px; 
+    font-weight: 500; 
+    margin: 0px; 
+    padding: 23px 5px; 
+    text-align: center; 
+    background-color: rgb(27, 16, 16); 
+    color: white; 
+    transform: translateY(0px); 
+    border-bottom-left-radius: 10px; 
+    border-bottom-right-radius: 10px; 
+    transition: transform 1s; 
+} 
+ 
+.seccionProductos .contenedorProductos .seccionImagen:hover p { 
+    cursor: pointer; 
+    transform: translateY(-70px); 
+    transition: transform 1s; 
+} 
+ 
+.seccionProductos .contenedorProductos .texto { 
+    padding-left: 25px; 
+} 
+ 
+.texto .nombreProducto { 
+    font-weight: 500; 
+    margin-bottom: 0px; 
+} 
+ 
+.texto .precio { 
+    margin-top: 5px; 
+    font-size: 20px; 
+} 
+ 
+.texto .precio span { 
+    font-weight: 300; 
+    font-size: 17px; 
+} 
+ 
+.informacionGeneral { 
+    padding: 60px 0px; 
+    width: 90%; 
+    margin: auto; 
+    display: flex; 
+    flex-wrap: wrap; 
+} 
+ 
+.informacionGeneral>div { 
+    flex: 1 1 150px; 
+} 
+ 
+.informacionGeneral>div:first-child { 
+    border-right: 1px solid black;
+} 
+ 
+.informacionGeneral .textoImagen { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 30px; 
+    padding: 30px; 
+    width: 500px; 
+    text-align: center; 
+} 
+ 
+.textoImagen .imagen img { 
+    margin-top: 30px; 
+    width: 400px; 
+    height: 450px; 
+    border-radius: 10px; 
+    object-fit: cover; 
+} 
+ 
+footer { 
+    color: white; 
+    margin-top: 30px; 
+    padding-top: 50px; 
+    display: flex; 
+    flex-direction: column; 
+    background-color: rgb(63, 92, 88); 
+ 
+} 
+ 
+.NewsletterMenu { 
+    flex-wrap: wrap; 
+    margin: auto; 
+    width: 90%; 
+    display: grid; 
+    grid-template-columns: 4fr 1fr 1fr 1fr; 
+    gap: 30px; 
+} 
+ 
+.NewsletterMenu>div { 
+    flex: 1 1 250px; 
+} 
+ 
+.newsletter { 
+    width: 500px; 
+} 
+ 
+.newsletter form { 
+    width: 60%; 
+} 
+ 
+.newsletter .email { 
+    margin-top: 10px; 
+    border: 1px solid white; 
+    padding: 5px 30px; 
+    background-color: transparent; 
+} 
+ 
+.newsletter .botonForm { 
+    margin-top: 20px; 
+    width: 100px; 
+    background-color: transparent; 
+    color: white; 
+    padding: 5px; 
+    border: 1px solid white; 
+    transition: background-color 1s, color 1s; 
+} 
+ 
+.newsletter .botonForm:hover { 
+    color: rgb(63, 92, 88); 
+    background-color: white; 
+    transition: 1s; 
+} 
+ 
+.NewsletterMenu .menu h4 { 
+    font-weight: 500; 
+} 
+ 
+.NewsletterMenu .menu p { 
+    font-size: 15px; 
+    font-weight: 500; 
+} 
+ 
+footer .informacion { 
+    width: 90%; 
+    margin: auto; 
+    padding: 20px 0px 30px 0px; 
+    display: grid; 
+    grid-template-columns: 2fr 4fr 6fr; 
+    flex-wrap: wrap; 
+} 
+ 
+footer .informacion>div { 
+    flex: 1 1 350px; 
+} 
+ 
+.informacion h4 { 
+    font-size: 30px; 
+} 
+ 
+.informacion .empresa { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+} 
+ 
+.informacion .empresa img { 
+    filter: invert(100%); 
+    width: 50px; 
+} 
+ 
+.informacion .direccion { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    text-align: justify; 
+ 
+} 
+ 
+.informacion .direccion p { 
+    padding-left: 80px; 
+    margin: 0px; 
+    font-size: 15px; 
+} 
+ 
+.informacion .redes { 
+    display: flex; 
+    align-items: center; 
+    justify-content: end; 
+    gap: 20px; 
+    margin-right: 20px; 
+    filter: invert(100%); 
+} 
+ 
+ 
+/* Responsive */ 
+ 
+/* phone */ 
+/* @media (min-width: 480px ) { 
+    body{ 
+        background-color: red; 
+    } 
+ 
+} */ 
+ 
+/* tablet */ 
+/* @media (min-width: 768px ) { 
+    body{ 
+        background-color: blue; 
+    } 
+} */ 
+ 
+/* desktop */ 
+/* @media (min-width: 992px ) { 
+    body{ 
+        background-color: green; 
+    } 
+} */ 
+ 
+/* Responsive */ 
+ 
+/* phone */ 
+@media (min-width: 0px) and (max-width: 991px) { 
+    .informacionGeneral>div:first-child { 
+        border-right: 0px solid black; 
+    } 
+ 
+    .NewsletterMenu { 
+        display: flex; 
+        text-align: center; 
+    } 
+ 
+    .newsletter form { 
+        margin: auto; 
+        width: 90%; 
+    } 
+ 
+    .NewsletterMenu .menu h4 { 
+        font-weight: 700; 
+    } 
+ 
+    footer .informacion { 
+        display: flex; 
+        gap: 30px; 
+    } 
+ 
+    footer .informacion .redes { 
+        justify-content: center; 
+        align-items: center; 
+        margin: 0px; 
+    } 
+ 
+    .seccionProductos .contenedorProductos .seccionImagen p { 
+        transform: translateY(-70px); 
+    } 
+ 
+    .botonTransparente { 
+        background-color: white; 
+        color: var(--cafe); 
+    } 
+ 
+    .botonNegro { 
+        color: var(--cafe); 
+        background-color: white; 
+    } 
+ 
+    .informacionGeneral>div:first-child { 
+        border-bottom: 1px solid black; 
+    } 
+ 
+}
+           body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+h1{
+  color:#4C2805 ;
+}
+
+.dropdown-content {
+  display: none;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  margin: 10px;
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 80%;
+  overflow: auto;
+
+
+}
+
+.modal-content {
+  background-color: var(--cafeTranspartente);
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.lx{
+    background-color: var(--cafeTranspartente) ;
+    border-color: white;
+   font-size: 19px;
+   height: 30px;
+   color: white;
+   border-radius: 3px;
+}
+.blx{
+      color: white;
+      padding: 10px 60px;
+      font-size: 16px;
+      border-radius: 1px;
+      background-color:var(--cafeTranspartente) ;
+      border-color: white;
+}
+</style>
+    </head>
+    <body>
+
+
+                <nav class="ocultarSeccionNav" id="nav"> 
+        <!-- Tipo 1 --> 
+        <div class="header"> 
+ 
+            <h2>Furniture</h2> 
+            <img id="mostrarOcultarNav" src="fotos/menu.svg" alt="Icono de comedor" loading="lazy" width="200px" 
+                height="300px"> 
+        </div> 
+        <!-- Tipo 2 --> 
+        <div class="seccionNav"> 
+            <div class="visible"> 
+                <img src="fotos/IconoHome.svg" alt="Icono Home" loading="lazy" width="200px" height="300px"> 
+                <p>Maison Kayser</p> 
+                <img src="fotos/flecha.svg" class="abajo" id="desplegar" alt="Icono Flecha" loading="lazy" 
+                    width="200px" height="300px"> 
+            </div> 
+            <div class="oculto" id="oculto"> 
+                <div class="blanco"> 
+                    <h4>Secciones Pagina Web</h4> 
+ 
+                    <p><a href="#pan">Pan dulce</a></p> 
+                    <p><a href="#pq">Paquetes</a></p> 
+                    <p><a href="#lig">Ligeros del dia</a></p> 
+                    <p><a href="#sandy">Sandwiches y croques</a></p> 
+                    <p><a href="#ensa">Ensaladas</a></p> 
+                    <p><a href="#postre">Postres</a></p> 
+                    <p><a href="#bebidas">Bebidas</a></p> 
+                    <p><a href="#platillos">Platillos nuevos</a></p> 
+                    <p><a href="#pie">Footer</a></p> 
+ 
+                </div> 
+            </div> 
+        </div> 
+        <div class="seccionNav" id="seccionNav"> 
+            <div class="visible"> 
+                <img src="fotos/xd.svg" alt="Icono Newsletter" loading="lazy" width="200px" height="300px"> 
+                <p>Newsletter</p> 
+                <img src="fotos/flecha.svg" class="abajo" id="desplegar" alt="Icono flecha" loading="lazy" width="200px" height="300px"> 
+ 
+            </div> 
+            <div class="oculto" id="oculto"> 
+                <div class="blanco"> 
+                    <h4>Suscribete a nuestro Newsletter</h4> 
+                    <p><a href="#pie">Formulario</a></p> 
+                </div> 
+            </div> 
+        </div> 
+        <!-- Tipo 4--> 
+        <div class="seccionNav" id="seccionNav"> 
+            <div class="visible"> 
+                <img src="fotos/mensaj.svg" alt="Icono Redes sociales" loading="lazy" width="200px" 
+                    height="300px"> 
+                <p>Redes Sociales</p> 
+                <img src="fotos/flecha.svg" class="abajo" id="desplegar" alt="Icono flecha" loading="lazy" 
+                    width="200px" height="300px"> 
+            </div> 
+ 
+            <div class="oculto" id="oculto"> 
+                <div class="blanco"> 
+ 
+                    <h4>Contactanos tambien por estos medios</h4> 
+                    <div class="RedesSociales"> 
+                        <div> 
+                            <img src="fotos/INSTA.png" alt="instagram"> 
+                            <p>Instagram</p> 
+                        </div> 
+                        <div> 
+                            <img src="fotos/faceb.png" alt="Facebook Icono"> 
+                            <p>Facebook</p> 
+                        </div> 
+                        <div> 
+                            <img src="fotos/what.png" alt="whattsap icono"> 
+                            <p>whatsApp</p> 
+                        </div> 
+                        <div> 
+                            <img src="fotos/tel.png" alt="telegram icono"> 
+                            <p>Telegram</p> 
+                        </div> 
+                        <div> 
+                            <img src="fotos/tik.png" alt="tiktok icono"> 
+                            <p>tik tok</p> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+        <div class="seccionNav" id="seccionNav"> 
+            <div class="darkMode"> 
+                <img src="fotos/IconoDarkMode.svg" alt="Icono Dark mode" loading="lazy" width="200px" height="300px"> 
+                <button class="modob"id="modoBtn"> Modo oscuro</button>
+                
+            </div> 
+        </div> 
+    </nav> 
+ 
+    <main class="medidasMain"> 
+        <div class="contenedorMain"> 
+            <h1>DEJA'VU </h1> 
+            <p>REALICE SUS PEDIDOS EN CUALQUIER LUGAR A CUALQUIER HORA, SE LO MANDAREMOS CON EL MEJOR SERVICIO DE PAQUETERIA </p> 
+            <button  id="openModal" class="botonTransparente"> Comprar ahora </button> 
+
+ 
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Registro de Cliente</h2>
+    <form id="registrationForm">
+     
+      <input type="number" class="lx"id="cantidadPiezas" name="cantidadPiezas" placeholder="Cantidad de piezas"><br><br>
+
+    
+      <textarea id="recomendaciones" class="lx" name="recomendaciones" placeholder="Recomendaciones:" rows="4" cols="50"></textarea><br><br>
+
+
+      <input type="text" class="lx" id="direccion" name="direccion" placeholder="Dirección:"><br><br>
+
+      <input type="text" class="lx"id="nombreCompleto"placeholder="Nombre Completo" name="nombreCompleto"><br><br>
+       <h2>Total:$ <span id="total">0.00</span></h2>
+
+      <input type="submit" class="blx"value="Enviar">
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+        </div> 
+    </main> 
+ 
+    <article class="menuProductos"> 
+        <div> 
+            <img src="fotos/plati.svg" alt="Icono de luz" loading="lazy" width="200px" height="300px"> 
+            <p>Ensaladas<br>Ligeros del dia</p> 
+        </div> 
+        <div> 
+            <img src="fotos/bebidas.svg" alt="Icono de comedor" loading="lazy" width="200px" height="300px"> 
+            <p>Bebidas</p> 
+        </div> 
+        <div> 
+            <img src="fotos/sandw.svg" alt="Icono de cuarto" loading="lazy" width="200px" height="300px"> 
+            <p>sandwiches y croques </p> 
+        </div> 
+        <div> 
+            <img src="fotos/pan.svg" alt="Icono de sala" loading="lazy" width="200px" height="300px">
+<p>Pan dulce <br> postres</p> 
+        </div> 
+    </article> 
+ 
+    <article class="seccionProductos"> 
+        <h2>Pan dulce</h2> 
+        <section id ="pan">
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/chocoalm.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+              
+                </div> 
+                <div class="texto"> 
+               <input type="checkbox" id="platillo6" class="platillo" data-precio="75.00">
+                <p class="nombreProducto">Chocolatìn de Almendra</p> 
+                <p class="precio">$75<span>.00</span></p> 
+             
+
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/croiss.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+              
+                </div> 
+                <div class="texto">
+                   <input type="checkbox" id="platillo6" class="platillo" data-precio="42.00"> 
+                    <p class="nombreProducto">Croissant</p> 
+                    <p class="precio">$42<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/crof.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="74.00">
+                    <p class="nombreProducto">Croissant Roll Frambuesa</p> 
+                    <p class="precio">$74<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/gari.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+      
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="43.00">
+                    <p class="nombreProducto">Garibaldi</p> 
+                    <p class="precio">$43<span>.00</span></p> 
+                </div> 
+            </div> 
+         
+             <div>
+            <div class="seccionImagen"> 
+                    <img src="fotos/viet.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+             
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="51.00">
+                    <p class="nombreProducto">Viennoise de Chocolate oscuro</p> 
+                    <p class="precio">$51<span>.00</span></p> 
+                </div> 
+            </div> 
+        </div> 
+        </section>
+    </article> 
+           <article class="seccionProductos"> 
+        <h2>Paquetes</h2> 
+         <section id ="pq">
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/bonjour.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+            
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="71.00">
+                    <p class="nombreProducto">Bonjour</p> 
+                    <p class="precio">$71<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/express.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+             
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="141.00">
+                    <p class="nombreProducto">Express</p> 
+                    <p class="precio">$141<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/maison.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="171.00">
+                    <p class="nombreProducto">Maison</p> 
+                    <p class="precio">$171<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/matin.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                   
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="121.00">
+                    <p class="nombreProducto">>Matin</p> 
+                    <p class="precio">$121<span>.00</span></p> 
+                </div> 
+            </div> 
+          
+         
+             <div>
+            <div class="seccionImagen"> 
+                    <img src="fotos/natu.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+
+                </div> 
+                <div class="texto"> 
+                    <input type="checkbox" id="platillo6" class="platillo" data-precio="211.00">
+                    <p class="nombreProducto">Nature</p> 
+                    <p class="precio">211<span>.00</span></p> 
+                </div> 
+            </div> 
+        </div>
+        </section> 
+    </article> 
+           <article class="seccionProductos"> 
+        <h2>Ligeros del dia</h2> 
+         <section id ="lig">
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/fresas.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="146.00">
+                    <p class="nombreProducto">Copa de Fresas con yogurt y granola</p> 
+                    <p class="precio">$146<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/melon.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                  
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="67.00">
+                    <p class="nombreProducto">Ensalada de Melon</p> 
+                    <p class="precio">$67<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/caff.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                 
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="61.00">
+                    <p class="nombreProducto">Yogurt con Granola</p> 
+                    <p class="precio">$61<span>.00</span></p> 
+                </div> 
+            </div> 
+        </div>
+    </section>
+    </article> 
+  <article class="seccionProductos"> 
+    <section id ="sandy">
+        <h2>sandwiches y croques</h2> 
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/pavo.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                  
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="143.00">
+                    <p class="nombreProducto">Sandwich Pavo-Aguacate</p> 
+                    <p class="precio">$143<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/cesar.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+              
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="143.00">
+                    <p class="nombreProducto">Sandwich Pollo - Cesar</p> 
+                    <p class="precio">$143<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/milanesa.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+              
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="143.00">
+                    <p class="nombreProducto">Sandwitch de Milanesa</p> 
+                    <p class="precio">$143<span>.00</span></p> 
+                </div> 
+            </div> 
+             <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/croque.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                  
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="196.00">
+                    <p class="nombreProducto">Croque-monsieur</p> 
+                    <p class="precio">$196<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/chap.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="162.00">
+                    <p class="nombreProducto">Chapata club</p> 
+                    <p class="precio">$162<span>.00</span></p> 
+                </div> 
+            </div> 
+        </div>
+    </section>
+    </article> 
+        <article class="seccionProductos"> 
+        <h2>Ensalada</h2> 
+        <section id ="ensa">
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/ensac.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+          
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="162.00">
+                    <p class="nombreProducto">Ensalada César con Pollo</p> 
+                    <p class="precio">$162<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/espinaca.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                   
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="120.00">
+                    <p class="nombreProducto">Ensalada Fresa-Espinaca</p> 
+                    <p class="precio">$120<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/griega.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                   
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="187.00">
+                    <p class="nombreProducto">Ensalada Griega</p> 
+                    <p class="precio">$187<span>.00</span></p> 
+                </div> 
+            </div> 
+        </div>
+    </section>
+    </article> 
+        <article class="seccionProductos"> 
+            <section id ="postre">
+        <h2>Postres</h2> 
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/brownie.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+        
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="67.00">
+                    <p class="nombreProducto">Brownie</p> 
+                    <p class="precio">$67<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/chees.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+    
+                </div> 
+                <div class="texto">
+                   <input type="checkbox" id="platillo6" class="platillo" data-precio="72.00"> 
+                    <p class="nombreProducto">Cheesecake</p> 
+                    <p class="precio">$72<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/macarron.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                   
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="25.00">
+                    <p class="nombreProducto">Macarron Chocolate</p> 
+                    <p class="precio">$25<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+
+                    <img src="fotos/limon.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+              
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="74.00">
+                    <p class="nombreProducto">Tarta de limon</p> 
+                    <p class="precio">$74<span>.00</span></p> 
+                </div>
+            
+
+                 <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/fres.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                
+                </div> 
+                <div class="texto"> 
+                       <input type="checkbox" id="platillo6" class="platillo" data-precio="74.00">
+                    <p class="nombreProducto">Tarta fresa</p> 
+                    <p class="precio">$74<span>.00</span></p> 
+                </div> 
+            </div> 
+
+        </div>
+    </section>
+    </article> 
+        
+        <article class="seccionProductos"> 
+        <h2>Bebidas</h2> 
+        <section id ="bebidas">
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/tehel.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+               
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="44.00">
+                    <p class="nombreProducto">Tè helado</p> 
+                    <p class="precio">$44<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/frio.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+               
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="72.00">
+                    <p class="nombreProducto">Chocolate frio</p> 
+                    <p class="precio">$72<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/cold.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+      
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="57.00">
+                    <p class="nombreProducto">Cold Brew</p> 
+                    <p class="precio">$57<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/matcha.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                   
+                </div> 
+                <div class="texto">
+                         <input type="checkbox" id="platillo6" class="platillo" data-precio="66.00"> 
+                    <p class="nombreProducto">Matcha Frappè</p> 
+                    <p class="precio">$66<span>.00</span></p> 
+                </div>
+                <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/agua.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+               
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="45.00">
+                    <p class="nombreProducto">Agua de clorofila</p> 
+                    <p class="precio">$45<span>.00</span></p> 
+                </div>
+          
+        </div>
+    </section>
+    </article> 
+        
+   
+ 
+    <article class="seccionProductos"> 
+         <section id ="platillos">
+        <h2>Platillos nuevos</h2> 
+        <div class="contenedorProductos"> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/arrachera.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                    <p>Click Para mas informacion</p> 
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="235.00">
+                    <p class="nombreProducto">Chilaquiles con arrachera</p> 
+                    <p class="precio">$235<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/tartine.png" alt="imagen de producto" loading="lazy" width="200px" height="300px">
+<p>Click Para mas informacion</p> 
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="196.00">
+                    <p class="nombreProducto">Tartine de esparragos</p> 
+                    <p class="precio">$196<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/grilled.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                    <p>Click Para mas informacion</p> 
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="177.00">
+                    <p class="nombreProducto">Grilled sandwich</p> 
+                    <p class="precio">$177<span>.00</span></p> 
+                </div> 
+            </div> 
+            <div> 
+                <div class="seccionImagen"> 
+                    <img src="fotos/moll.png" alt="imagen de producto" loading="lazy" width="200px" height="300px"> 
+                    <p>Click Para mas informacion</p> 
+                </div> 
+                <div class="texto"> 
+                             <input type="checkbox" id="platillo6" class="platillo" data-precio="250.00">
+                    <p class="nombreProducto">Molletes de queso-chipotle</p> 
+                    <p class="precio">$250<span>.00</span></p> 
+                </div> 
+            </div> 
+        </div> 
+    </section>
+    </article> 
+
+    <footer> 
+         <section id ="pie">
+        <div class="NewsletterMenu"> 
+            <div class="newsletter"> 
+                <form> 
+                    <fieldset> 
+                        <legend>Suscribete a nuestro Newsletter</legend> 
+                        <input type="email" name="email" class="email" /> 
+                        <input class="botonForm" type="submit" value="Enviar" /> 
+ 
+                    </fieldset> 
+                </form> 
+            </div> 
+            <div class="menu"> 
+                <h4>Nuestros Productos</h4> 
+                <p>Luz</p> 
+                <p>Comedor</p> 
+                <p>Cuarto</p> 
+                <p>Sala</p> 
+            </div> 
+            <div class="menu"> 
+                <h4>Servicio al Cliente</h4> 
+                <p>Políticas de la compañía</p> 
+                <p>Devoluciones </p> 
+                <p>FAQ </p> 
+            </div> 
+            <div class="menu"> 
+                <h4>Sobre nosotros</h4> 
+                <p>Nuestros clientes</p> 
+                <p>Nuestra historia</p> 
+                <p>Contacto</p> 
+                <p>tiendas</p> 
+            </div> 
+        </div> 
+ 
+        <div class="informacion"> 
+            <div class="empresa"> 
+                <img src="fotos/empre.svg" alt="Icono de la empresa" width="200px" height="300px"> 
+                <h4>Furniture</h4> 
+            </div> 
+ 
+            <div class="direccion"> 
+                <p>500 calle 500, San Francisco, CA 4098</p> 
+                <p>123-456-7890 / correo@correo.com</p> 
+            </div> 
+ 
+            <div class="redes"> 
+                <img src="fotos/tik.png" alt="logo de instagram" width="200px" height="300px"> 
+                <img src="fotos/INSTA.png" alt="logo de instagram" width="200px" height="300px"> 
+                <img src="fotos/faceb.png" alt="logo de instagram" width="200px" height="300px"> 
+            </div> 
+        </div> 
+    </section>
+    </footer> 
+   
+  </div>
+       </center> 
+        <script>let desplegar = document.querySelectorAll('#desplegar'); 
+let oculto = document.querySelectorAll('#oculto'); 
+let mostrarOcultarNav = document.getElementById('mostrarOcultarNav'); 
+let nav = document.getElementById('nav') 
+ 
+ 
+let vanDesplegar = true; 
+for (let x = 0; x < desplegar.length; x++){ 
+    desplegar[x].addEventListener('click', function(){ 
+        if (vanDesplegar == true){ 
+            oculto[x].classList.add('mostrar') 
+            oculto[x].classList.remove('oculto'); 
+ 
+            desplegar[x].classList.add('arriba'); 
+            desplegar[x].classList.remove('abajo'); 
+ 
+            vanDesplegar = false; 
+        } else{ 
+ 
+            oculto[x].classList.remove('mostrar') 
+            oculto[x].classList.add('oculto'); 
+ 
+            desplegar[x].classList.remove('arriba'); 
+            desplegar[x].classList.add('abajo'); 
+ 
+            vanDesplegar = true; 
+        } 
+    }); 
+} 
+ 
+vanNav = true; 
+mostrarOcultarNav.addEventListener('click', function(){ 
+    if (vanNav == true){ 
+        nav.classList.remove('ocultarSeccionNav'); 
+        vanNav = false; 
+    } else{ 
+        nav.classList.add('ocultarSeccionNav'); 
+        vanNav = true; 
+    } 
+})
+
+document.getElementById('openModal').addEventListener('click', function() {
+  document.getElementById('modal').style.display = 'block';
+});
+
+document.getElementsByClassName('close')[0].addEventListener('click', function() {
+  document.getElementById('modal').style.display = 'none';
+});
+
+// Envío del formulario (aquí puedes agregar tu lógica de envío a un servidor, etc.)
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita el envío por defecto del formulario para este ejemplo
+  // Aquí puedes recoger los valores de los inputs y hacer algo con ellos
+  let cantidadPiezas = document.getElementById('cantidadPiezas').value;
+  let recomendaciones = document.getElementById('recomendaciones').value;
+  let direccion = document.getElementById('direccion').value;
+  let nombreCompleto = document.getElementById('nombreCompleto').value;
+
+  // Aquí podrías enviar esta información a un servidor o realizar otras acciones
+  console.log("Cantidad de Piezas: " + cantidadPiezas);
+  console.log("Recomendaciones: " + recomendaciones);
+  console.log("Dirección: " + direccion);
+  console.log("Nombre Completo: " + nombreCompleto);
+
+  // Para este ejemplo, simplemente cerramos la ventana modal después de enviar el formulario
+  document.getElementById('modal').style.display = 'none';
+});
+     // Obtén todos los elementos con la clase "platillo"
+        const platillos = document.querySelectorAll('.platillo');
+        
+        // Agrega un evento "change" a cada checkbox
+        platillos.forEach(checkbox => {
+            checkbox.addEventListener('change', actualizarTotal);
+        });
+        
+        function actualizarTotal() {
+            let total = 0;
+            platillos.forEach(checkbox => {
+                if (checkbox.checked) {
+                    total += parseFloat(checkbox.getAttribute('data-precio'));
+                }
+            });
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+ document.getElementById("modoBtn").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
+
+ </script>
+    </body>
+</html>
+
+
+ 
+
