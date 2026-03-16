@@ -1,0 +1,185 @@
+.titulo{
+text-align:center;
+font-size:32px;
+margin:40px;
+color:#006241;
+}
+
+.productos{
+display:flex;
+flex-wrap:wrap;
+gap:30px;
+justify-content:center;
+}
+
+.card{
+width:200px;
+background:white;
+border-radius:12px;
+padding:15px;
+text-align:center;
+box-shadow:0 6px 20px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.card h3{
+color:#222;
+}
+
+.precio{
+color:#ff6a00;
+font-weight:bold;
+}
+
+button{
+background:#006241;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.carrito{
+position: fixed;
+right: 30px;
+top: 120px;
+width: 220px;
+background: white;
+color: #333;
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.carrito h2{
+text-align:center;
+margin-bottom:10px;
+color: #333;
+}
+
+.carrito h3,
+.carrito .item span,
+.carrito .total {
+color: #333;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+font-size:14px;
+margin-bottom:6px;
+}
+
+.total{
+text-align:center;
+margin-top:10px;
+}
+
+.btn-ver{
+width:100%;
+padding:8px;
+border:none;
+background:#0a5c3b;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.btn-ver:hover{
+background:#083f29;
+}
+
+.btn-toggle-carrito {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background-color: #006241;
+color: white;
+border: none;
+border-radius: 30px;
+padding: 10px 20px;
+font-size: 16px;
+cursor: pointer;
+z-index: 1000;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.btn-toggle-carrito:hover{
+background-color: #083f29;
+}
+
+.carrito-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.carrito-header h2 {
+margin: 0;
+}
+
+.btn-cerrar-carrito {
+background: transparent;
+color: #333;
+border: 1px solid #ccc;
+border-radius: 50%;
+width: 28px;
+height: 28px;
+font-size: 14px;
+cursor: pointer;
+padding: 0;
+line-height: 28px;
+text-align: center;
+}
+
+.btn-cerrar-carrito:hover {
+background: #eee;
+}
+
+/* ── MODO OSCURO ── */
+body.dark .card {
+background: #2c2c2c;
+color: #f0f0f0;
+}
+
+body.dark .card h3 {
+color: #f0f0f0 !important;
+}
+
+body.dark .carrito {
+background: #2c2c2c;
+color: #f0f0f0;
+}
+
+body.dark .carrito h2,
+body.dark .carrito h3,
+body.dark .carrito .item span,
+body.dark .carrito .total {
+color: #f0f0f0;
+}
+
+body.dark .btn-cerrar-carrito {
+color: #f0f0f0;
+border-color: #555;
+}
+
+body.dark .btn-cerrar-carrito:hover {
+background: #444;
+}
+
+body.dark hr {
+border-color: #555;
+}

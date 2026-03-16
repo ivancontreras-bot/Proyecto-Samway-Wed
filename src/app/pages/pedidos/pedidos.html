@@ -1,0 +1,31 @@
+<div class="contenedor">
+
+<h2>Pedidos</h2>
+
+<table>
+
+<tr>
+<th>Nombre</th>
+<th>Dirección</th>
+<th>Total</th>
+<th>Estado</th>
+<th>Acciones</th>
+</tr>
+
+<tr *ngFor="let p of pedidos; let i = index">
+
+<td>{{p.nombre}}</td>
+<td>{{p.direccion}}</td>
+<td>${{p.total}}</td>
+<td class="estado">{{p.estado}}</td>
+
+<td class="acciones">
+<button class="preparar" (click)="cambiarEstado(i,'Preparando')">Preparar</button>
+<button class="enviar" (click)="cambiarEstado(i,'Enviado')">Enviar</button>
+</td>
+
+</tr>
+
+</table>
+
+</div>

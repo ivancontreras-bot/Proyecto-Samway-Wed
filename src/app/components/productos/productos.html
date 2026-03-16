@@ -1,0 +1,138 @@
+<h1 class="titulo">Menú</h1>
+
+<!-- PAN DULCE -->
+<h2>Pan dulce</h2>
+<div class="productos">
+
+<ng-container *ngFor="let p of productos">
+<div class="card" *ngIf="p.categoria=='pan'">
+
+<img [src]="p.img">
+
+<h3>{{p.nombre}}</h3>
+
+<p class="precio">$ {{p.precio}}</p>
+
+<button (click)="agregar(p)">Agregar</button>
+
+</div>
+</ng-container>
+
+</div>
+
+
+<!-- SANDWICHES -->
+<h2>Sandwiches</h2>
+<div class="productos">
+
+<ng-container *ngFor="let p of productos">
+<div class="card" *ngIf="p.categoria=='sandwich'">
+
+<img [src]="p.img">
+
+<h3>{{p.nombre}}</h3>
+
+<p class="precio">$ {{p.precio}}</p>
+
+<button (click)="agregar(p)">Agregar</button>
+
+</div>
+</ng-container>
+
+</div>
+
+
+<!-- ENSALADAS -->
+<h2>Ensaladas</h2>
+<div class="productos">
+
+<ng-container *ngFor="let p of productos">
+<div class="card" *ngIf="p.categoria=='ensalada'">
+
+<img [src]="p.img">
+
+<h3>{{p.nombre}}</h3>
+
+<p class="precio">$ {{p.precio}}</p>
+
+<button (click)="agregar(p)">Agregar</button>
+
+</div>
+</ng-container>
+
+</div>
+
+
+<!-- BEBIDAS -->
+<h2>Bebidas</h2>
+<div class="productos">
+
+<ng-container *ngFor="let p of productos">
+<div class="card" *ngIf="p.categoria=='bebida'">
+
+<img [src]="p.img">
+
+<h3>{{p.nombre}}</h3>
+
+<p class="precio">$ {{p.precio}}</p>
+
+<button (click)="agregar(p)">Agregar</button>
+
+</div>
+</ng-container>
+
+</div>
+
+
+<!-- PAQUETES -->
+<h2>Paquetes</h2>
+<div class="productos">
+
+<ng-container *ngFor="let p of productos">
+<div class="card" *ngIf="p.categoria=='paquete'">
+
+<img [src]="p.img">
+
+<h3>{{p.nombre}}</h3>
+
+<p class="precio">$ {{p.precio}}</p>
+
+<button (click)="agregar(p)">Agregar</button>
+
+</div>
+</ng-container>
+
+</div>
+
+<!-- Botón flotante solo cuando el carrito está CERRADO -->
+<button class="btn-toggle-carrito" *ngIf="!carritoVisible" (click)="toggleCarrito()">
+  🛒 Ver pedido
+</button>
+
+<!-- Panel del carrito -->
+<div class="carrito" *ngIf="carritoVisible">
+
+  <div class="carrito-header">
+    <h2>🛒 Tu pedido</h2>
+    <button class="btn-cerrar-carrito" (click)="toggleCarrito()">✕</button>
+  </div>
+
+  <div class="item" *ngFor="let item of carrito">
+    <span>{{item.nombre}}</span>
+    <span>$ {{item.precio}}</span>
+  </div>
+
+  <hr>
+
+  <h3 class="total">Total: $ {{total}}</h3>
+
+  <button class="btn-ver" (click)="abrir()">Ver pedido</button>
+
+</div>
+
+<app-modal 
+*ngIf="modal" 
+[carrito]="carrito" 
+[total]="total"
+(cerrar)="cerrar()">
+</app-modal>

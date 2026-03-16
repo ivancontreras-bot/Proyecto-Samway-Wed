@@ -1,0 +1,53 @@
+<div class="overlay">
+
+  <div class="modal-box">
+
+    <h2>🛒 Tu pedido</h2>
+
+    <div class="lista">
+      <div *ngFor="let p of carrito">
+        <p>{{p.nombre}} - ${{p.precio}}</p>
+      </div>
+    </div>
+
+    <h3>Total: $ {{total}}</h3>
+
+    <h3 class="titulo-cliente">Datos del cliente</h3>
+
+    <input 
+    type="text"
+    placeholder="Nombre"
+    [(ngModel)]="nombre"
+    class="input">
+
+    <input 
+    type="text"
+    placeholder="Dirección"
+    [(ngModel)]="direccion"
+    class="input">
+
+    <div class="botones">
+
+      <button class="btn-confirmar" (click)="confirmar()">
+        Confirmar pedido
+      </button>
+
+      <button class="btn-cerrar" (click)="cerrarModal()">
+        Cerrar
+      </button>
+
+    </div>
+
+  </div>
+<div class="mensaje" *ngIf="pedidoConfirmado">
+
+<h2>✅ Pedido enviado correctamente</h2>
+
+<p>Gracias por tu compra {{nombre}}</p>
+
+<button class="btn-confirmar" (click)="cerrarModal()">
+Cerrar
+</button>
+
+</div>
+</div>
