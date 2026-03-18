@@ -1,8 +1,7 @@
-<h1 class="titulo">Menú de Cafetería</h1>
+<h1 class="titulo">Menú</h1>
 
 <div *ngFor="let cat of ['pan', 'sandwich', 'ensalada', 'bebida', 'paquete']">
-  <h2 class="categoria-subtitulo">{{ cat | titlecase }}</h2>
-  
+  <h2 class="categoria-titulo">{{ cat | titlecase }}</h2>
   <div class="productos-grid">
     <ng-container *ngFor="let p of productos">
       <div class="card" *ngIf="p.categoria == cat">
@@ -12,26 +11,23 @@
         
         <div class="botones-container">
           <button class="btn-agregar" (click)="agregar(p)">Agregar</button>
-          <button class="btn-info" (click)="verInformacion(p)">Informacion del producto </button>
+          <button class="btn-info" (click)="verInformacion(p)">Informacion del producto</button>
         </div>
 
         <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
-          <h4>¿Quitar algo?</h4>
+          <h4>¿Quitar ingredientes?</h4>
           <div class="lista-ingredientes">
             <div *ngFor="let ing of p.ingredientes">
-              <label class="check-container">
+              <label>
                 <input type="checkbox" 
                        [checked]="productoSeleccionado.seleccionados.includes(ing)" 
                        (change)="toggleIngrediente(ing)"> 
-                <span class="checkmark"></span>
                 {{ing}}
               </label>
             </div>
           </div>
-          <div class="acciones-overlay">
-            <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
-            <button class="btn-cerrar-overlay" (click)="productoSeleccionado = null">X</button>
-          </div>
+          <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
+          <button class="btn-cerrar-overlay" (click)="productoSeleccionado = null">Cerrar</button>
         </div>
       </div>
     </ng-container>
@@ -44,12 +40,18 @@
 </button>
 
 <div class="carrito-panel" [class.visible]="carritoVisible">
+  
   <div class="carrito-header">
-    <h2>🛒 Tu pedido</h2>
+    <div class="titulo-flex">
+      <span class="icono-carrito-header">🛒</span>
+      <h2 class="texto-tu-pedido">Tu pedido</h2>
+    </div>
     <button class="btn-cerrar-carrito" (click)="toggleCarrito()">✕</button>
   </div>
 
-  <div class="carrito-items">
+  <div class="carrito-body">
+    <p *ngIf="carrito.length === 0" class="vacio-msg">Tu carrito está vacío</p>
+
     <div class="item-carrito" *ngFor="let item of carrito">
       <div class="info-item">
         <strong>{{item.nombre}}</strong>
@@ -57,24 +59,18 @@
       </div>
       <span class="precio-item">${{item.precio}}</span>
     </div>
-    <p *ngIf="carrito.length === 0" class="vacio-msg">Tu carrito está vacío</p>
   </div>
 
-  <div class="carrito-footer">
-    <hr>
+  <div class="carrito-footer" *ngIf="carrito.length > 0">
+    <hr class="separador-carrito">
     <div class="total-row">
-      <span>Total:</span>
-      <span>${{total}}</span>
+      <span class="label-total">Total:</span>
+      <span class="monto-total">${{total}}</span>
     </div>
-    <button class="btn-finalizar" [disabled]="carrito.length === 0" (click)="abrir()">
+    <button class="btn-ver-resumen" (click)="abrir()">
       Ver Resumen
     </button>
   </div>
 </div>
 
-<app-modal 
-  *ngIf="modal" 
-  [carrito]="carrito" 
-  [total]="total"
-  (cerrar)="cerrar()">
-</app-modal>
+<app-modal *ngIf="modal" [carrito]="carrito" [total]="total" (cerrar)="cerrar()"></app-modal>
