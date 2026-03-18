@@ -1,47 +1,40 @@
-<footer class="footer">
 
-<div class="newsletter">
+<footer id="pie">
+  <div class="footer-container">
+    
+    <div class="footer-section newsletter">
+      <h4>Suscríbete a nuestro Newsletter</h4>
+      <p>Recibe las mejores ofertas de Samway directamente en tu correo.</p>
+      <form (ngSubmit)="suscribir()">
+        <div class="input-group">
+          <input type="email" placeholder="tu@correo.com" name="email" class="email-input">
+          <button type="submit" class="botonForm">Enviar</button>
+        </div>
+      </form>
+    </div>
 
-<h3>Suscríbete a nuestro Newsletter</h3>
+    <div class="footer-section info">
+      
+      <p>Realice sus pedidos en cualquier lugar a cualquier hora.</p>
+      <div class="contacto-detalles">
+        <p>📍 500 calle 500, San Francisco, CA 4098</p>
+        <p>📞 123-456-7890</p>
+        <p>✉️ contacto@samway.com</p>
+      </div>
+    </div>
 
-<input type="text" placeholder="Tu correo">
+    <div class="footer-section redes">
+      <h4>Síguenos</h4>
+      <div class="social-icons">
+        <a href="#"><img src="/fotos/INSTA.png" alt="Instagram"></a>
+        <a href="#"><img src="/fotos/faceb.png" alt="Facebook"></a>
+        <a href="#"><img src="/fotos/what.png" alt="WhatsApp"></a>
+        <a href="#"><img src="/fotos/tik.png" alt="TikTok"></a>
+      </div>
+    </div>
 
-<button>Enviar</button>
-
-</div>
-
-<div class="links">
-
-<div>
-<h4>Nuestros Productos</h4>
-<p>Pan dulce</p>
-<p>Sandwiches</p>
-<p>Bebidas</p>
-<p>Ensaladas</p>
-</div>
-
-<div>
-<h4>Servicio al Cliente</h4>
-<p>Políticas</p>
-<p>Devoluciones</p>
-<p>FAQ</p>
-</div>
-
-<div>
-<h4>Sobre Nosotros</h4>
-<p>Nuestra historia</p>
-<p>Clientes</p>
-<p>Contacto</p>
-</div>
-
-</div>
-
-<div class="copy">
-
-<h3>Samway</h3>
-
-<p>500 calle 500, San Francisco</p>
-
-</div>
-
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Samway- Samwayy. Todos los derechos reservados.</p>
+  </div>
 </footer>
