@@ -1,169 +1,75 @@
-<h1 class="titulo">Menú</h1>
+<h1 class="titulo">Menú de Cafetería</h1>
 
-<h2>Pan dulce</h2>
-<div class="productos">
-  <ng-container *ngFor="let p of productos">
-    <div class="card" *ngIf="p.categoria=='pan'">
-      <img [src]="p.img">
-      <h3>{{p.nombre}}</h3>
-      <p class="precio">$ {{p.precio}}</p>
-      
-      <div class="botones-container">
-        <button (click)="agregar(p)">Agregar</button>
-        <button class="btn-info" (click)="verInformacion(p)">Información</button>
-      </div>
+<div *ngFor="let cat of ['pan', 'sandwich', 'ensalada', 'bebida', 'paquete']">
+  <h2 class="categoria-subtitulo">{{ cat | titlecase }}</h2>
+  
+  <div class="productos-grid">
+    <ng-container *ngFor="let p of productos">
+      <div class="card" *ngIf="p.categoria == cat">
+        <img [src]="p.img" [alt]="p.nombre" class="producto-img">
+        <h3>{{p.nombre}}</h3>
+        <p class="precio">${{p.precio}}</p>
+        
+        <div class="botones-container">
+          <button class="btn-agregar" (click)="agregar(p)">Agregar</button>
+          <button class="btn-info" (click)="verInformacion(p)">Informacion del producto </button>
+        </div>
 
-      <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
-        <h4>Ingredientes:</h4>
-        <div class="lista-ingredientes">
-          <div *ngFor="let ing of p.ingredientes">
-            <label>
-              <input type="checkbox" 
-                     [checked]="productoSeleccionado.seleccionados.includes(ing)"
-                     (change)="toggleIngrediente(ing)"> 
-              {{ing}}
-            </label>
+        <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
+          <h4>¿Quitar algo?</h4>
+          <div class="lista-ingredientes">
+            <div *ngFor="let ing of p.ingredientes">
+              <label class="check-container">
+                <input type="checkbox" 
+                       [checked]="productoSeleccionado.seleccionados.includes(ing)" 
+                       (change)="toggleIngrediente(ing)"> 
+                <span class="checkmark"></span>
+                {{ing}}
+              </label>
+            </div>
+          </div>
+          <div class="acciones-overlay">
+            <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
+            <button class="btn-cerrar-overlay" (click)="productoSeleccionado = null">X</button>
           </div>
         </div>
-        <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
-        <button class="btn-cerrar" (click)="productoSeleccionado = null">Cerrar</button>
       </div>
-    </div>
-  </ng-container>
-</div>
-
-<h2>Sandwiches</h2>
-<div class="productos">
-  <ng-container *ngFor="let p of productos">
-    <div class="card" *ngIf="p.categoria=='sandwich'">
-      <img [src]="p.img">
-      <h3>{{p.nombre}}</h3>
-      <p class="precio">$ {{p.precio}}</p>
-      
-      <div class="botones-container">
-        <button (click)="agregar(p)">Agregar</button>
-        <button class="btn-info" (click)="verInformacion(p)">Información</button>
-      </div>
-
-      <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
-        <h4>Ingredientes:</h4>
-        <div class="lista-ingredientes">
-          <div *ngFor="let ing of p.ingredientes">
-            <label>
-              <input type="checkbox" [checked]="productoSeleccionado.seleccionados.includes(ing)" (change)="toggleIngrediente(ing)"> 
-              {{ing}}
-            </label>
-          </div>
-        </div>
-        <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
-        <button class="btn-cerrar" (click)="productoSeleccionado = null">Cerrar</button>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
-<h2>Ensaladas</h2>
-<div class="productos">
-  <ng-container *ngFor="let p of productos">
-    <div class="card" *ngIf="p.categoria=='ensalada'">
-      <img [src]="p.img">
-      <h3>{{p.nombre}}</h3>
-      <p class="precio">$ {{p.precio}}</p>
-      
-      <div class="botones-container">
-        <button (click)="agregar(p)">Agregar</button>
-        <button class="btn-info" (click)="verInformacion(p)">Información</button>
-      </div>
-
-      <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
-        <h4>Ingredientes:</h4>
-        <div class="lista-ingredientes">
-          <div *ngFor="let ing of p.ingredientes">
-            <label>
-              <input type="checkbox" [checked]="productoSeleccionado.seleccionados.includes(ing)" (change)="toggleIngrediente(ing)"> 
-              {{ing}}
-            </label>
-          </div>
-        </div>
-        <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
-        <button class="btn-cerrar" (click)="productoSeleccionado = null">Cerrar</button>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
-<h2>Bebidas</h2>
-<div class="productos">
-  <ng-container *ngFor="let p of productos">
-    <div class="card" *ngIf="p.categoria=='bebida'">
-      <img [src]="p.img">
-      <h3>{{p.nombre}}</h3>
-      <p class="precio">$ {{p.precio}}</p>
-      
-      <div class="botones-container">
-        <button (click)="agregar(p)">Agregar</button>
-        <button class="btn-info" (click)="verInformacion(p)">Información</button>
-      </div>
-
-      <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
-        <h4>Ingredientes:</h4>
-        <div class="lista-ingredientes">
-          <div *ngFor="let ing of p.ingredientes">
-            <label>
-              <input type="checkbox" [checked]="productoSeleccionado.seleccionados.includes(ing)" (change)="toggleIngrediente(ing)"> 
-              {{ing}}
-            </label>
-          </div>
-        </div>
-        <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
-        <button class="btn-cerrar" (click)="productoSeleccionado = null">Cerrar</button>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
-<h2>Paquetes</h2>
-<div class="productos">
-  <ng-container *ngFor="let p of productos">
-    <div class="card" *ngIf="p.categoria=='paquete'">
-      <img [src]="p.img">
-      <h3>{{p.nombre}}</h3>
-      <p class="precio">$ {{p.precio}}</p>
-      
-      <div class="botones-container">
-        <button (click)="agregar(p)">Agregar</button>
-        <button class="btn-info" (click)="verInformacion(p)">Información</button>
-      </div>
-
-      <div class="info-overlay" *ngIf="productoSeleccionado?.nombre === p.nombre">
-        <h4>Ingredientes:</h4>
-        <div class="lista-ingredientes">
-          <div *ngFor="let ing of p.ingredientes">
-            <label>
-              <input type="checkbox" [checked]="productoSeleccionado.seleccionados.includes(ing)" (change)="toggleIngrediente(ing)"> 
-              {{ing}}
-            </label>
-          </div>
-        </div>
-        <button class="btn-confirmar" (click)="agregarPersonalizado()">Confirmar</button>
-        <button class="btn-cerrar" (click)="productoSeleccionado = null">Cerrar</button>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
-<div class="carrito">
-  <h2>🛒 Tu pedido</h2>
-  <div class="item" *ngFor="let item of carrito">
-    <div>
-        <strong>{{item.nombre}}</strong>
-        <p *ngIf="item.nota" style="font-size: 0.7em; margin: 0; color: gray;">{{item.nota}}</p>
-    </div>
-    <span>$ {{item.precio}}</span>
+    </ng-container>
   </div>
-  <hr>
-  <h3 class="total">Total: $ {{total}}</h3>
-  <button class="btn-ver" (click)="abrir()">Ver pedido</button>
+</div>
+
+<button class="btn-flotante-verde" *ngIf="!carritoVisible" (click)="toggleCarrito()">
+  <span class="icono">🛒</span>
+  <span class="texto">Ver pedido</span>
+</button>
+
+<div class="carrito-panel" [class.visible]="carritoVisible">
+  <div class="carrito-header">
+    <h2>🛒 Tu pedido</h2>
+    <button class="btn-cerrar-carrito" (click)="toggleCarrito()">✕</button>
+  </div>
+
+  <div class="carrito-items">
+    <div class="item-carrito" *ngFor="let item of carrito">
+      <div class="info-item">
+        <strong>{{item.nombre}}</strong>
+        <p *ngIf="item.nota" class="nota-personalizacion">{{item.nota}}</p>
+      </div>
+      <span class="precio-item">${{item.precio}}</span>
+    </div>
+    <p *ngIf="carrito.length === 0" class="vacio-msg">Tu carrito está vacío</p>
+  </div>
+
+  <div class="carrito-footer">
+    <hr>
+    <div class="total-row">
+      <span>Total:</span>
+      <span>${{total}}</span>
+    </div>
+    <button class="btn-finalizar" [disabled]="carrito.length === 0" (click)="abrir()">
+      Ver Resumen
+    </button>
+  </div>
 </div>
 
 <app-modal 
