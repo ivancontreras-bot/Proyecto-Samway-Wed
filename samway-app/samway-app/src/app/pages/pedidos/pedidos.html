@@ -1,0 +1,65 @@
+<div class="admin-container">
+  <div class="header-admin">
+    <h2>📦 Panel de Administración Samway</h2>
+    <button class="btn-actualizar" (click)="cargarPedidos()">🔄 Refrescar Pedidos</button>
+  </div>
+
+  <div class="tabla-wrapper">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente y Dirección</th>
+          <th>Pedido (Notas)</th>
+          <th>Total</th>
+          <th>Estado Actual</th>
+          <th>Acciones de Gestión</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pedidos">
+          <td class="col-id">#{{ p._id?.slice(-5) }}</td>
+          <td class="col-cliente">
+            <strong>{{ p.nombre }}</strong>
+            <small>📍 {{ p.direccion }}</small>
+          </td>
+          <td class="col-productos">
+            <div *ngFor="let item of p.productos">
+              • {{ item.nombre }}
+              <span *ngIf="item.notas" class="nota-cliente">({{ item.notas }})</span>
+            </div>
+          </td>
+          <td class="col-total"><strong>${{ p.total }}</strong></td>
+          <td>
+            <span class="badge-estado" [ngClass]="p.estado?.toLowerCase() || 'pendiente'">
+              {{ p.estado || 'Pendiente' }}
+            </span>
+          </td>
+          <td class="col-acciones">
+            <button class="btn-prep" (click)="cambiarEstado(p._id, 'Preparando')" [disabled]="p.estado !== 'Pendiente'">Prep</button>
+            <button class="btn-env" (click)="cambiarEstado(p._id, 'Enviado')" [disabled]="p.estado !== 'Preparando'">Enviar</button>
+            <button class="btn-listo" (click)="cambiarEstado(p._id, 'Entregado')" [disabled]="p.estado !== 'Enviado'">Listo</button>
+          </td>
+          <td>
+            <button class="btn-borrar" (click)="abrirModalBorrar(p._id)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarConfirmacion">
+  <div class="modal-confirm-box">
+    <div class="modal-body">
+      <span class="warning-icon">⚠️</span>
+      <h3>¿Eliminar este pedido?</h3>
+      <p>Esta acción es irreversible y borrará el registro de la base de datos de Samway.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-confirm-del" (click)="confirmarEliminar()">Sí, eliminar</button>
+      <button class="btn-cancel" (click)="mostrarConfirmacion = false">Cancelar</button>
+    </div>
+  </div>
+</div>

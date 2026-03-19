@@ -1,0 +1,83 @@
+<h1 class="titulo">Menú Samway</h1>
+
+<ng-container *ngFor="let categoria of ['pan', 'sandwich', 'ensalada', 'bebida', 'paquete']">
+  <h2 class="capitalize" style="text-align: center; margin-top: 30px; color: #333;">
+    {{ categoria == 'pan' ? 'Pan Dulce' : (categoria | titlecase) }}
+  </h2>
+
+  <div class="productos">
+    <ng-container *ngFor="let p of productos">
+      <div class="card" *ngIf="p.categoria == categoria">
+        <img [src]="p.img" [alt]="p.nombre">
+        <h3>{{p.nombre}}</h3>
+        <p class="precio">$ {{p.precio}}</p>
+        
+        <div class="botones-grid">
+          <button class="btn-agregar" (click)="agregar(p)">Agregar</button>
+          <button class="btn-detalles" (click)="verDetalle(p)">Detalles</button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<button class="btn-flotante-carrito" (click)="toggleCarrito()">
+  🛒 <span class="badge" *ngIf="carrito.length > 0">{{carrito.length}}</span>
+</button>
+
+<div class="carrito" [class.abierto]="carritoAbierto">
+  <div class="carrito-header">
+    <h2>🛒 Tu pedido</h2>
+    <button class="btn-cerrar-mini" (click)="toggleCarrito()">✕</button>
+  </div>
+  
+  <div class="scroll-items">
+    <div class="item" *ngFor="let item of carrito; let i = index">
+      <div class="info-prod">
+        <div style="display: flex; justify-content: space-between;">
+          <strong>{{item.nombre}}</strong>
+          <span class="subtotal-item">$ {{item.precio}}</span>
+        </div>
+        <small *ngIf="item.notas" class="nota-texto">
+          - {{item.notas}}
+        </small>
+      </div>
+    </div>
+
+    <div *ngIf="carrito.length === 0" style="text-align: center; color: #888; padding: 20px;">
+      El carrito está vacío
+    </div>
+  </div>
+
+  <div class="carrito-footer">
+    <hr>
+    <h3 class="total">Total: $ {{total}}</h3>
+    <button class="btn-ver" 
+            (click)="abrir()" 
+            [disabled]="carrito.length === 0"
+            [style.opacity]="carrito.length === 0 ? '0.5' : '1'">
+      Confirmar Pedido
+    </button>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarDetalle">
+  <div class="modal-content">
+    <h2>{{productoSeleccionado.nombre}}</h2>
+    <p class="descripcion">{{productoSeleccionado.descripcion}}</p>
+    
+    <div class="campo-notas">
+      <label style="font-weight: bold; display: block; margin-bottom: 5px;">
+        ¿Alguna instrucción especial?
+      </label>
+      <textarea [(ngModel)]="productoSeleccionado.notas" placeholder="Ej: Sin aderezo..."></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarDetalle()">Cancelar</button>
+      <button class="btn-confirmar" (click)="confirmarAgregar()">Añadir - ${{productoSeleccionado.precio}}</button>
+    </div>
+  </div>
+</div>
+
+<app-modal *ngIf="modal" [carrito]="carrito" [total]="total" (cerrar)="cerrar()"></app-modal>
