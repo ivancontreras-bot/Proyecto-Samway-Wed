@@ -7,15 +7,7 @@
     <app-productos (productoAgregado)="agregarAlCarrito($event)"></app-productos>
 
     <aside class="sidebar-carrito">
-      <div class="card-carrito">
-        <h3>Tu pedido</h3>
-        <div *ngFor="let item of carrito" class="item-sidebar">
-          {{item.nombre}} - ${{item.precio}}
-        </div>
-        <hr>
-        <strong>Total: ${{total}}</strong>
-        <button (click)="abrirConfirmacion()" [disabled]="carrito.length === 0">Confirmar</button>
-      </div>
+     
     </aside>
   </main>
 
