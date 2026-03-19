@@ -66,3 +66,12 @@
   font-size: 0.9rem;
   color: #888;
 }
+/* Esto marcará el input si el usuario interactuó y es inválido */
+.email-input.ng-invalid.ng-touched {
+  border: 2px solid #d9534f;
+}
+
+.botonForm:hover {
+  cursor: pointer;
+  filter: brightness(1.1);
+}
