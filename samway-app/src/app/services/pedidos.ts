@@ -27,4 +27,11 @@ export class PedidosService {
   eliminarPedido(id: string): Observable<any> {
     return this.http.delete(`${this.url}/${id}`);
   }
+  obtenerNewsletter(): Observable<any> {
+  return this.http.get('http://127.0.0.1:5000/api/newsletter');
+}
+
+crearProducto(producto: any): Observable<any> {
+  return this.http.post('http://127.0.0.1:5000/api/productos', producto);
+}
 }

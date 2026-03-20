@@ -1,65 +1,78 @@
 <div class="admin-container">
-  <div class="header-admin">
-    <h2>📦 Panel de Administración Samway</h2>
-    <button class="btn-actualizar" (click)="cargarPedidos()">🔄 Refrescar Pedidos</button>
+  <div class="admin-nav">
+    <button (click)="seccion = 'pedidos'" [class.active]="seccion === 'pedidos'">Gestión Pedidos</button>
+    <button (click)="seccion = 'newsletter'; cargarNewsletter()" [class.active]="seccion === 'newsletter'">Newsletter</button>
+    <button (click)="seccion = 'nuevo'" [class.active]="seccion === 'nuevo'">+ Nuevo Producto</button>
   </div>
 
-  <div class="tabla-wrapper">
-    <table class="tabla">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Cliente y Dirección</th>
-          <th>Pedido (Notas)</th>
-          <th>Total</th>
-          <th>Estado Actual</th>
-          <th>Acciones de Gestión</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of pedidos">
-          <td class="col-id">#{{ p._id?.slice(-5) }}</td>
-          <td class="col-cliente">
-            <strong>{{ p.nombre }}</strong>
-            <small>📍 {{ p.direccion }}</small>
-          </td>
-          <td class="col-productos">
-            <div *ngFor="let item of p.productos">
-              • {{ item.nombre }}
-              <span *ngIf="item.notas" class="nota-cliente">({{ item.notas }})</span>
-            </div>
-          </td>
-          <td class="col-total"><strong>${{ p.total }}</strong></td>
-          <td>
-            <span class="badge-estado" [ngClass]="p.estado?.toLowerCase() || 'pendiente'">
-              {{ p.estado || 'Pendiente' }}
-            </span>
-          </td>
-          <td class="col-acciones">
-            <button class="btn-prep" (click)="cambiarEstado(p._id, 'Preparando')" [disabled]="p.estado !== 'Pendiente'">Prep</button>
-            <button class="btn-env" (click)="cambiarEstado(p._id, 'Enviado')" [disabled]="p.estado !== 'Preparando'">Enviar</button>
-            <button class="btn-listo" (click)="cambiarEstado(p._id, 'Entregado')" [disabled]="p.estado !== 'Enviado'">Listo</button>
-          </td>
-          <td>
-            <button class="btn-borrar" (click)="abrirModalBorrar(p._id)">🗑️</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <hr>
+
+  <div *ngIf="seccion === 'pedidos'">
+    <div class="header-admin">
+      <h2>📦 Pedidos Recibidos</h2>
+      <button class="btn-actualizar" (click)="cargarPedidos()">🔄 Refrescar</button>
+    </div>
+    <div class="tabla-wrapper">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Pedido</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of pedidos">
+            <td><strong>{{p.nombre}}</strong><br><small>{{p.direccion}}</small></td>
+            <td>
+              <div *ngFor="let item of p.productos">• {{item.nombre}}</div>
+            </td>
+            <td>${{p.total}}</td>
+            <td><span class="badge-estado">{{p.estado}}</span></td>
+            <td>
+              <button (click)="cambiarEstado(p._id, 'Entregado')" class="btn-listo">✔</button>
+              <button (click)="abrirModalBorrar(p._id)" class="btn-borrar">🗑</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="seccion === 'newsletter'">
+    <h2>📧 Lista de Correos</h2>
+    <div class="tabla-wrapper">
+      <table class="tabla">
+        <thead>
+          <tr><th>Correo del Cliente</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let n of newsletter">
+            <td>{{ n.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="seccion === 'nuevo'" class="form-container">
+    <h2>✨ Subir Nuevo Producto</h2>
+    <div class="form-nuevo">
+      <input type="text" [(ngModel)]="nuevoProd.nombre" placeholder="Nombre del producto">
+      <input type="number" [(ngModel)]="nuevoProd.precio" placeholder="Precio ($)">
+      <textarea [(ngModel)]="nuevoProd.descripcion" placeholder="Descripción corta"></textarea>
+      <input type="text" [(ngModel)]="nuevoProd.img" placeholder="Ruta de imagen (ej: /fotos/nuevo.jpg)">
+      <button (click)="guardarProducto()" class="btn-send">Guardar en Base de Datos</button>
+    </div>
   </div>
 </div>
 
 <div class="modal-overlay" *ngIf="mostrarConfirmacion">
   <div class="modal-confirm-box">
-    <div class="modal-body">
-      <span class="warning-icon">⚠️</span>
-      <h3>¿Eliminar este pedido?</h3>
-      <p>Esta acción es irreversible y borrará el registro de la base de datos de Samway.</p>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-confirm-del" (click)="confirmarEliminar()">Sí, eliminar</button>
-      <button class="btn-cancel" (click)="mostrarConfirmacion = false">Cancelar</button>
-    </div>
+    <h3>¿Eliminar pedido?</h3>
+    <button (click)="confirmarEliminar()" class="btn-confirm-del">Eliminar</button>
+    <button (click)="mostrarConfirmacion = false">Cancelar</button>
   </div>
 </div>
