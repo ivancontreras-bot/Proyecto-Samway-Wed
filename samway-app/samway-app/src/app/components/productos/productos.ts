@@ -32,7 +32,43 @@ export class ProductosComponent {
     { nombre: "Capuccino", precio: 48, categoria: "bebida", img: "/capuccino.jpg", descripcion: "Equilibrio perfecto entre espresso, leche vaporizada y espuma." },
     { nombre: "Jugo Natural", precio: 40, categoria: "bebida", img: "/jugo.jpg", descripcion: "Jugo de naranja 100% natural, exprimido al momento." },
     { nombre: "Paquete Desayuno", precio: 150, categoria: "paquete", img: "/desayuno.jpg", descripcion: "Incluye café, jugo pequeño y un sándwich de jamón." },
-    { nombre: "Paquete Pareja", precio: 250, categoria: "paquete", img: "/pareja.jpg", descripcion: "2 bebidas, 2 piezas de pan y 1 ensalada grande." }
+    { nombre: "Paquete Pareja", precio: 250, categoria: "paquete", img: "/pareja.jpg", descripcion: "2 bebidas, 2 piezas de pan y 1 ensalada grande." },
+    //nuevos 
+  { 
+      nombre: "Croissant Roll Frambuesa", 
+      precio: 75, 
+      categoria: "nuevos", 
+      img: "/fotos/crof.png", 
+      descripcion: "Exquisito roll de hojaldre artesanal relleno de crema pastelera y coulis de frambuesa natural." 
+    },
+    { 
+      nombre: "Cheesecake de frambuesa", 
+      precio: 72, 
+      categoria: "nuevos", 
+      img: "/fotos/chees.png", 
+      descripcion: "Base de galleta crujiente con crema de queso suave, coronado con una brillante jalea de frambuesas frescas." 
+    },
+    { 
+      nombre: "Grilled sandwich", 
+      precio: 177, 
+      categoria: "nuevos", 
+      img: "/fotos/grilled.png", 
+      descripcion: "Sándwich a la parrilla con mezcla de quesos fundidos, mantequilla de hierbas y un toque de tocino crocante." 
+    },
+    { 
+      nombre: "Chilaquiles con arrachera", 
+      precio: 235, 
+      categoria: "nuevos", 
+      img: "/fotos/arrachera.png", 
+      descripcion: "Tortillas crujientes bañadas en salsa especial, servidas con 150g de arrachera premium, crema y queso fresco." 
+    },
+    { 
+      nombre: "Molletes de queso-chipotle", 
+      precio: 250, 
+      categoria: "nuevos", 
+      img: "/fotos/moll.png", 
+      descripcion: "Clásicos molletes con frijoles refritos, gratinados con queso tipo Manchego y un toque ahumado de crema de chipotle." 
+    }
   ];
 
   toggleCarrito() {

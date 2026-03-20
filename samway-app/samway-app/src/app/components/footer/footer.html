@@ -1,7 +1,23 @@
 <footer id="pie">
   <div class="footer-container">
     
-    
+    <div class="footer-section newsletter">
+      <h4>Suscríbete a nuestro Newsletter</h4>
+      <p>Recibe las mejores ofertas de Samway directamente en tu correo.</p>
+      
+      <form (ngSubmit)="suscribir()">
+        <div class="input-group">
+          <input 
+            type="email" 
+            [(ngModel)]="email" 
+            name="email" 
+            placeholder="tu@correo.com" 
+            class="email-input"
+            required>
+          <button type="submit" class="botonForm">Enviar</button>
+        </div>
+      </form>
+    </div>
       
 
     <div class="footer-section info">

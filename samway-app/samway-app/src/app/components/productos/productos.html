@@ -1,6 +1,6 @@
 <h1 class="titulo">Menú Samway</h1>
 
-<ng-container *ngFor="let categoria of ['pan', 'sandwich', 'ensalada', 'bebida', 'paquete']">
+<ng-container *ngFor="let categoria of ['pan', 'sandwich', 'ensalada', 'bebida', 'paquete','nuevos']">
   <h2 class="capitalize" style="text-align: center; margin-top: 30px; color: #333;">
     {{ categoria == 'pan' ? 'Pan Dulce' : (categoria | titlecase) }}
   </h2>
