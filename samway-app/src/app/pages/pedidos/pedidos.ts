@@ -1,18 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { PedidosService } from '../../services/pedidos';
 
 @Component({
   selector: 'app-pedidos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './pedidos.html',
   styleUrls: ['./pedidos.css']
 })
 export class PedidosComponent implements OnInit {
+  // Variables de control y datos
   pedidos: any[] = [];
+  newsletter: any[] = [];
+  seccion: string = 'pedidos'; 
+  
   mostrarConfirmacion = false;
-  idEliminar: string = ''; // 🚩 Asegúrate de que sea string
+  idEliminar: string = '';
+
+  // Modelo para nuevo producto
+  nuevoProd = {
+    nombre: '',
+    precio: 0,
+    categoria: 'nuevos',
+    img: '',
+    descripcion: ''
+  };
 
   constructor(private pedidosService: PedidosService) {}
 
@@ -20,44 +34,49 @@ export class PedidosComponent implements OnInit {
     this.cargarPedidos();
   }
 
+  // --- MÉTODOS DE ACCIÓN ---
+
   cargarPedidos() {
     this.pedidosService.obtenerPedidos().subscribe({
-      next: (data: any) => {
-        // Limpiamos y asignamos para evitar duplicados visuales
-        this.pedidos = [...data];
-      },
-      error: (err) => console.error("Error al cargar:", err)
+      next: (data) => this.pedidos = data,
+      error: (err) => console.error(err)
+    });
+  }
+
+  cargarNewsletter() {
+    this.pedidosService.obtenerNewsletter().subscribe({
+      next: (data) => this.newsletter = data,
+      error: (err) => console.error(err)
     });
   }
 
   cambiarEstado(id: string, nuevoEstado: string) {
-    if (!id) return;
-    this.pedidosService.actualizarEstado(id, nuevoEstado).subscribe({
-      next: () => this.cargarPedidos(),
-      error: (err) => alert("Error al actualizar")
+    this.pedidosService.actualizarEstado(id, nuevoEstado).subscribe(() => this.cargarPedidos());
+  }
+
+  guardarProducto() {
+    if (!this.nuevoProd.nombre || this.nuevoProd.precio <= 0) {
+      alert("Por favor, completa los datos básicos.");
+      return;
+    }
+    this.pedidosService.crearProducto(this.nuevoProd).subscribe({
+      next: () => {
+        alert("Producto guardado correctamente");
+        this.nuevoProd = { nombre: '', precio: 0, categoria: 'nuevos', img: '', descripcion: '' };
+      },
+      error: () => alert("Error al guardar")
     });
   }
 
-  // 🗑️ ELIMINAR: Función corregida
   abrirModalBorrar(id: string) {
-    console.log("ID a eliminar:", id); // Para debug en consola
     this.idEliminar = id;
     this.mostrarConfirmacion = true;
   }
 
   confirmarEliminar() {
-    if (!this.idEliminar) return;
-    
-    this.pedidosService.eliminarPedido(this.idEliminar).subscribe({
-      next: () => {
-        this.mostrarConfirmacion = false;
-        this.idEliminar = '';
-        this.cargarPedidos();
-      },
-      error: (err) => {
-        console.error(err);
-        alert("No se pudo eliminar el pedido");
-      }
+    this.pedidosService.eliminarPedido(this.idEliminar).subscribe(() => {
+      this.mostrarConfirmacion = false;
+      this.cargarPedidos();
     });
   }
 }

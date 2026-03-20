@@ -49,3 +49,43 @@ button:disabled { background: #d1d5db !important; cursor: not-allowed; opacity: 
 
 .btn-confirm-del { background: #d33; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 .btn-cancel { background: #eee; color: #333; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+
+.admin-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.admin-nav button {
+  background: #f4f4f4;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-nav button.active {
+  background: #006241;
+  color: white;
+  border-color: #006241;
+}
+
+.form-nuevo-prod {
+  max-width: 500px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.form-nuevo-prod input, .form-nuevo-prod select, .form-nuevo-prod textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}

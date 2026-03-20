@@ -1,11 +1,56 @@
-<h2>Pedidos</h2>
+<div class="admin-wrapper">
+  <h1 class="titulo-admin">Panel Maestro Samway</h1>
 
-<div *ngFor="let pedido of pedidos">
+  <div class="nav-tabs">
+    <button (click)="cambiarSeccion('pedidos')" [class.active]="seccion === 'pedidos'">📋 Pedidos</button>
+    <button (click)="cambiarSeccion('newsletter')" [class.active]="seccion === 'newsletter'">📧 Newsletter</button>
+    <button (click)="cambiarSeccion('nuevo')" [class.active]="seccion === 'nuevo'">✨ Nuevo Producto</button>
+  </div>
 
-<p>Nombre: {{pedido.nombre}}</p>
-<p>Direccion: {{pedido.direccion}}</p>
-<p>Total: ${{pedido.total}}</p>
+  <hr class="divisor">
 
-<hr>
+  <div *ngIf="seccion === 'pedidos'" class="fade-in">
+    <div class="header-sec">
+        <h2>Gestión de Pedidos</h2>
+        <button class="btn-refresh" (click)="cargarPedidos()">🔄 Actualizar</button>
+    </div>
+    <div class="card-admin" *ngFor="let pedido of pedidos">
+      <div class="info-pedido">
+        <p><strong>Cliente:</strong> {{pedido.nombre}}</p>
+        <p><strong>Dirección:</strong> {{pedido.direccion}}</p>
+        <p><strong>Total:</strong> ${{pedido.total}}</p>
+      </div>
+      <button class="btn-del" (click)="eliminarPedido(pedido._id)">Eliminar</button>
+    </div>
+  </div>
 
+  <div *ngIf="seccion === 'newsletter'" class="fade-in">
+    <h2>Correos para Promociones</h2>
+    <div class="lista-emails">
+      <div class="email-item" *ngFor="let n of newsletter">
+        <span>✉️ {{ n.email }}</span>
+        <small>ID: {{ n._id }}</small>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="seccion === 'nuevo'" class="fade-in">
+    <div class="form-producto">
+      <h2>Subir Producto al Menú Principal</h2>
+      <input type="text" [(ngModel)]="nuevoProd.nombre" placeholder="Nombre del producto">
+      <input type="number" [(ngModel)]="nuevoProd.precio" placeholder="Precio ($)">
+      
+      <select [(ngModel)]="nuevoProd.categoria">
+        <option value="nuevos">Nuevos Lanzamientos</option>
+        <option value="pan">Panadería</option>
+        <option value="comida">Alimentos</option>
+        <option value="bebida">Bebidas</option>
+      </select>
+
+      <input type="text" [(ngModel)]="nuevoProd.img" placeholder="Ruta de imagen (ej: /fotos/cafe.jpg)">
+      <textarea [(ngModel)]="nuevoProd.descripcion" placeholder="Descripción del producto..."></textarea>
+      
+      <button class="btn-save" (click)="guardarProducto()">💾 Guardar en Base de Datos</button>
+    </div>
+  </div>
 </div>
