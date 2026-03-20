@@ -22,33 +22,63 @@
       </div>
       <button class="btn-del" (click)="eliminarPedido(pedido._id)">Eliminar</button>
     </div>
+    <div *ngIf="pedidos.length === 0" class="text-center">No hay pedidos pendientes.</div>
   </div>
 
   <div *ngIf="seccion === 'newsletter'" class="fade-in">
-    <h2>Correos para Promociones</h2>
+    <div class="header-sec">
+        <h2>📧 Correos para Promociones</h2>
+        <button class="btn-refresh" (click)="cargarNewsletter()">🔄 Refrescar Lista</button>
+    </div>
+    
     <div class="lista-emails">
       <div class="email-item" *ngFor="let n of newsletter">
-        <span>✉️ {{ n.email }}</span>
-        <small>ID: {{ n._id }}</small>
+        <div class="email-content">
+            <span class="icon">✉️</span>
+            <span class="txt-correo">{{ n.correo }}</span>
+        </div>
+        <small class="id-mongo">ID: {{ n._id }}</small>
       </div>
+    </div>
+
+    <div *ngIf="newsletter.length === 0" class="empty-state">
+      <p>Aún no hay suscriptores registrados en la base de datos.</p>
     </div>
   </div>
 
   <div *ngIf="seccion === 'nuevo'" class="fade-in">
     <div class="form-producto">
       <h2>Subir Producto al Menú Principal</h2>
-      <input type="text" [(ngModel)]="nuevoProd.nombre" placeholder="Nombre del producto">
-      <input type="number" [(ngModel)]="nuevoProd.precio" placeholder="Precio ($)">
       
-      <select [(ngModel)]="nuevoProd.categoria">
-        <option value="nuevos">Nuevos Lanzamientos</option>
-        <option value="pan">Panadería</option>
-        <option value="comida">Alimentos</option>
-        <option value="bebida">Bebidas</option>
-      </select>
+      <div class="input-group">
+        <label>Nombre del Producto</label>
+        <input type="text" [(ngModel)]="nuevoProd.nombre" placeholder="Ej: Croissant de Chocolate">
+      </div>
 
-      <input type="text" [(ngModel)]="nuevoProd.img" placeholder="Ruta de imagen (ej: /fotos/cafe.jpg)">
-      <textarea [(ngModel)]="nuevoProd.descripcion" placeholder="Descripción del producto..."></textarea>
+      <div class="input-group">
+        <label>Precio ($)</label>
+        <input type="number" [(ngModel)]="nuevoProd.precio" placeholder="0.00">
+      </div>
+      
+      <div class="input-group">
+        <label>Categoría</label>
+        <select [(ngModel)]="nuevoProd.categoria">
+          <option value="nuevos">Nuevos Lanzamientos</option>
+          <option value="pan">Panadería (Pan Dulce)</option>
+          <option value="comida">Sandwiches / Alimentos</option>
+          <option value="bebida">Café / Bebidas</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>Imagen (Ruta o URL)</label>
+        <input type="text" [(ngModel)]="nuevoProd.img" placeholder="assets/img/producto.jpg">
+      </div>
+
+      <div class="input-group">
+        <label>Descripción Corta</label>
+        <textarea [(ngModel)]="nuevoProd.descripcion" placeholder="Describe los ingredientes o sabor..."></textarea>
+      </div>
       
       <button class="btn-save" (click)="guardarProducto()">💾 Guardar en Base de Datos</button>
     </div>
