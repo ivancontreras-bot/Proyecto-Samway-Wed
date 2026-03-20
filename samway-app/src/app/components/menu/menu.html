@@ -1,0 +1,21 @@
+<div class="menu-container">
+  <header class="header-samway">
+   
+  </header>
+
+  <main class="cuerpo-app">
+    <app-productos (productoAgregado)="agregarAlCarrito($event)"></app-productos>
+
+    <aside class="sidebar-carrito">
+     
+    </aside>
+  </main>
+
+  <app-modal 
+    *ngIf="mostrarModal" 
+    [carrito]="carrito" 
+    [total]="total" 
+    (cerrar)="cerrarModal()"
+    (pedidoFinalizado)="finalizarProcesoPedido()">
+  </app-modal>
+</div>
