@@ -24,10 +24,11 @@ export class PedidosComponent implements OnInit {
   editando: boolean = false;
   idProductoEditando: string = '';
 
+  // Se actualizó la categoría inicial para que coincida con el menú
   nuevoProd = {
     nombre: '',
     precio: 0,
-    categoria: 'Pan Dulce',
+    categoria: 'Sandwich',
     img: '',
     descripcion: ''
   };
@@ -65,7 +66,14 @@ export class PedidosComponent implements OnInit {
       this.nuevoProd = { ...producto };
     } else {
       this.editando = false;
-      this.nuevoProd = { nombre: '', precio: 0, categoria: 'Pan Dulce', img: '', descripcion: '' };
+      // Se asegura que al resetear el formulario use una categoría válida
+      this.nuevoProd = { 
+        nombre: '', 
+        precio: 0, 
+        categoria: 'Sandwich', 
+        img: '', 
+        descripcion: '' 
+      };
     }
     this.subSeccion = 'formulario';
   }

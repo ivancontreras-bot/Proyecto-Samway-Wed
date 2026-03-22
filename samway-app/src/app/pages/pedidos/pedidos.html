@@ -53,6 +53,7 @@
     </div>
 
     <div *ngIf="seccion === 'nuevo'" class="fade-in">
+      
       <div *ngIf="subSeccion === 'lista'" class="card-white">
         <div class="header-flex">
           <h2>🍔 Inventario de Productos</h2>
@@ -70,7 +71,10 @@
           </thead>
           <tbody>
             <tr *ngFor="let prod of productos">
-              <td><img [src]="prod.img" class="img-mini" alt="prod"></td>
+              <td>
+                <img [src]="prod.img" class="img-mini" [alt]="prod.nombre" 
+                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+              </td>
               <td><strong>{{prod.nombre}}</strong></td>
               <td>{{prod.categoria}}</td>
               <td class="price">${{prod.precio}}</td>
@@ -94,28 +98,31 @@
 
         <div class="form-grid">
           <div class="input-group">
-            <label>Nombre</label>
-            <input type="text" [(ngModel)]="nuevoProd.nombre">
+            <label>Nombre del Producto (Lo que ve el cliente)</label>
+            <input type="text" [(ngModel)]="nuevoProd.nombre" placeholder="Ej: Club Sandwich Especial">
           </div>
           <div class="input-group">
             <label>Precio</label>
             <input type="number" [(ngModel)]="nuevoProd.precio">
           </div>
           <div class="input-group full">
-            <label>Imagen (Ruta)</label>
-            <input type="text" [(ngModel)]="nuevoProd.img">
+            <label>Archivo de Imagen (Debe estar en carpeta public)</label>
+            <input type="text" [(ngModel)]="nuevoProd.img" placeholder="Ej: club.jpg">
           </div>
           <div class="input-group full">
             <label>Categoría</label>
             <select [(ngModel)]="nuevoProd.categoria">
               <option value="Pan Dulce">Pan Dulce</option>
               <option value="Sandwich">Sandwich</option>
-              <option value="Bebidas">Bebidas</option>
+              <option value="Ensalada">Ensalada</option>
+              <option value="Bebida">Bebida</option>
+              <option value="Paquete">Paquete</option>
+              <option value="Nuevos Lanzamientos">Nuevos Lanzamientos</option>
             </select>
           </div>
           <div class="input-group full">
             <label>Descripción</label>
-            <textarea [(ngModel)]="nuevoProd.descripcion" rows="3"></textarea>
+            <textarea [(ngModel)]="nuevoProd.descripcion" rows="3" placeholder="Descripción estilo universitario..."></textarea>
           </div>
         </div>
       </div>
@@ -132,9 +139,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let n of newsletter">
-            <td>{{ n.correo }}</td> <td>{{ n.fecha }}</td> </tr>
+            <td>{{ n.correo }}</td>
+            <td>{{ n.fecha }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
+
   </main>
 </div>

@@ -1,13 +1,14 @@
 <h1 class="titulo">Menú Samway</h1>
 
-<ng-container *ngFor="let categoria of ['pan', 'sandwich', 'ensalada', 'bebida', 'paquete','nuevos']">
-  <h2 class="capitalize" style="text-align: center; margin-top: 30px; color: #333;">
-    {{ categoria == 'pan' ? 'Pan Dulce' : (categoria | titlecase) }}
+<ng-container *ngFor="let categoria of ['Pan Dulce', 'Sandwich', 'Ensalada', 'Bebida', 'Paquete', 'Nuevos Lanzamientos']">
+  
+  <h2 class="capitalize" style="text-align: center; margin-top: 30px; color: #333; font-weight: 800; border-bottom: 2px solid #d4a373; display: inline-block; padding-bottom: 5px; width: 100%;">
+    {{ categoria }}
   </h2>
 
   <div class="productos">
     <ng-container *ngFor="let p of productos">
-      <div class="card" *ngIf="p.categoria == categoria">
+      <div class="card" *ngIf="p.categoria === categoria">
         <img [src]="p.img" [alt]="p.nombre">
         <h3>{{p.nombre}}</h3>
         <p class="precio">$ {{p.precio}}</p>
@@ -21,11 +22,14 @@
   </div>
 </ng-container>
 
-<button class="btn-flotante-carrito" (click)="toggleCarrito()">
-  🛒 <span class="badge" *ngIf="carrito.length > 0">{{carrito.length}}</span>
-</button>
+<div class="contenedor-flotante">
+  <button class="btn-circulo" (click)="toggleCarrito()">
+    🛒
+    <span class="badge" *ngIf="carrito.length > 0">{{carrito.length}}</span>
+  </button>
+</div>
 
-<div class="carrito" [class.abierto]="carritoAbierto">
+<div class="carrito-sidebar" [class.abierto]="carritoAbierto">
   <div class="carrito-header">
     <h2>🛒 Tu pedido</h2>
     <button class="btn-cerrar-mini" (click)="toggleCarrito()">✕</button>
@@ -44,7 +48,7 @@
       </div>
     </div>
 
-    <div *ngIf="carrito.length === 0" style="text-align: center; color: #888; padding: 20px;">
+    <div *ngIf="carrito.length === 0" class="vacio-msg">
       El carrito está vacío
     </div>
   </div>
@@ -53,18 +57,16 @@
     <hr>
     <h3 class="total">Total: $ {{total}}</h3>
     
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      <button class="btn-ver" 
+    <div class="footer-botones">
+      <button class="btn-confirmar-pedido" 
               (click)="abrir()" 
-              [disabled]="carrito.length === 0"
-              [style.opacity]="carrito.length === 0 ? '0.5' : '1'">
+              [disabled]="carrito.length === 0">
         Confirmar Pedido
       </button>
 
-      <button class="btn-vaciar" 
+      <button class="btn-vaciar-pedido" 
               (click)="vaciarCarrito()" 
-              *ngIf="carrito.length > 0"
-              style="background-color: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+              *ngIf="carrito.length > 0">
         Vaciar Carrito
       </button>
     </div>

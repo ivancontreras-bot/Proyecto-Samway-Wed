@@ -1,174 +1,242 @@
-.titulo { text-align: center; font-size: 32px; margin: 40px; color: #006241; }
-h2 { text-align: center; color: #333; margin-top: 30px; }
+/* --- 1. CONFIGURACIÓN BASE Y LAYOUT --- */
+:root {
+  --verde-samway: #006241;
+  --verde-accion: #28a745; /* Verde para botones y carrito */
+  --blanco: #ffffff;
+  --bg-light: #fdfaf7;
+}
 
-/* Contenedor principal */
+body {
+  background-color: var(--bg-light);
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.titulo {
+  text-align: center;
+  color: var(--verde-samway);
+  font-weight: 800;
+  margin-top: 40px;
+  text-transform: uppercase;
+}
+
+/* --- 2. GRID Y TARJETAS DE PRODUCTOS --- */
 .productos {
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-  gap: 20px;
-  padding: 20px;
-  justify-items: center; 
-}
-
-/* Celulares grandes y Tablets (Menos de 768px) */
-@media (max-width: 768px) {
-  .titulo {
-    font-size: 24px;
-    margin: 20px;
-  }
-
-  .card {
-    width: 90%; 
-    max-width: 300px;
-  }
-
-  .carrito {
-    width: 100%; 
-    right: -100%; 
-  }
-  
-  .carrito.abierto {
-    right: 0;
-  }
-}
-
-/* Celulares pequeños (Menos de 480px) */
-@media (max-width: 480px) {
-  .productos {
-    grid-template-columns: 1fr; 
-  }
-
-  .botones-grid {
-    flex-direction: column; 
-  }
-
-  .btn-flotante-carrito {
-    width: 55px;
-    height: 55px;
-    bottom: 20px;
-    right: 20px;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 20px 5%;
 }
 
 .card {
-  width: 220px;
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
+  background: var(--blanco) !important;
+  border-radius: 20px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  transition: 0.3s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #eee;
 }
 
 .card img {
-  width: 100%;
-  height: auto; 
-  aspect-ratio: 1 / 1; 
-  object-fit: cover;
-  border-radius: 10px;
+  width: 180px !important;
+  height: 160px !important;
+  object-fit: contain;
+  background: #f9f9f9;
+  border-radius: 12px;
+  margin-bottom: 15px;
 }
 
-.card:hover { transform: scale(1.05); }
+.card h3 { color: #333; margin: 10px 0; }
+.card .precio { color: var(--verde-samway); font-weight: 800; font-size: 1.2rem; }
 
-.precio { color: #461e01; font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
+/* --- 3. BOTONES DE ACCIÓN (MÁXIMA PRIORIDAD VERDE) --- */
+.botones-grid {
+  display: flex !important;
+  gap: 10px;
+  width: 100%;
+  margin-top: 15px;
+}
 
-.botones-grid { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+/* Forzamos el color verde en el fondo y blanco en el texto */
+.btn-agregar, 
+.btn-detalles, 
+button.btn-agregar, 
+button.btn-detalles,
+.btn-confirmar,
+.botones-grid button {
+  background-color: var(--verde-accion) !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 12px 15px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: block !important;
+  flex: 1;
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-align: center !important;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+}
 
-button { background: #006241; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-button:hover { filter: brightness(1.2); }
-.btn-detalles { background: #17a2b8; }
+.btn-agregar:hover, .btn-detalles:hover {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+}
 
-/* --- BOTÓN FLOTANTE TRIGGER --- */
-.btn-flotante-carrito {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  font-size: 24px;
-  z-index: 999;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+/* --- 4. MODAL (FONDO BLANCO SÓLIDO Y OPACO) --- */
+.modal-overlay {
+  position: fixed !important;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.8) !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999 !important;
+}
+
+.modal-content {
+  background-color: #ffffff !important; 
+  background: white !important;
+  opacity: 1 !important;
+  border-radius: 20px !important;
+  padding: 35px !important;
+  color: #000000 !important; 
+  box-shadow: 0 15px 50px rgba(0,0,0,0.5) !important;
+  width: 90%;
+  max-width: 450px;
+  text-align: center !important;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 80px;
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Botón cancelar del modal */
+.btn-cancelar {
+  background-color: #eee !important;
+  color: #333 !important;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* --- 5. BOTÓN FLOTANTE DEL CARRITO --- */
+.contenedor-flotante {
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  z-index: 9999 !important;
+}
+
+button.btn-circulo {
+  background-color: var(--verde-accion) !important;
+  color: white !important;
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  border: 3px solid white !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
+  font-size: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
 }
 
 .badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: #d9534f;
+  top: 0;
+  right: 0;
+  background: red;
   color: white;
-  font-size: 12px;
-  width: 22px;
-  height: 22px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 5px 8px;
+  font-size: 12px;
   border: 2px solid white;
 }
 
-/* --- CARRITO DESPLEGABLE --- */
-.carrito {
+/* --- 6. CARRITO SIDEBAR (TU PEDIDO) --- */
+.carrito-sidebar {
   position: fixed;
   top: 0;
-  right: -320px; 
-  width: 300px;
+  right: -450px;
+  width: 400px;
   height: 100vh;
-  background: white;
-  z-index: 1000;
-  box-shadow: -5px 0 25px rgba(0,0,0,0.2);
-  transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: #ffffff !important;
+  z-index: 10000;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+  transition: 0.4s;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
+  color: #333 !important;
 }
 
-.carrito.abierto { right: 0; }
-
-.carrito-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-.btn-cerrar-mini { background: none; color: #999; font-size: 24px; padding: 0; border: none; }
-
-.scroll-items { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; }
-
-.item { padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
-.nota-texto { color: #d9534f; font-size: 11px; font-style: italic; display: block; }
-.total { color: #006241; text-align: right; margin: 15px 0; font-size: 1.4rem; font-weight: bold; }
-
-/* --- FOOTER DEL CARRITO Y NUEVO BOTÓN --- */
-.carrito-footer {
-  border-top: 1px solid #eee;
-  padding-top: 10px;
+.carrito-sidebar.abierto {
+  right: 0 !important;
 }
 
-.btn-ver { 
-  width: 100%; 
-  font-weight: bold; 
-  padding: 15px; 
-  margin-bottom: 10px;
-}
-
-.btn-vaciar {
-  width: 100%;
-  background-color: #e74c3c; /* Rojo suave para borrar */
-  color: white;
+.btn-vaciar-pedido {
+  background: #dc3545 !important;
+  color: white !important;
   border: none;
   padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
+  border-radius: 8px;
+  margin-top: 10px;
   cursor: pointer;
-  transition: 0.3s;
+}
+/* --- FORZAR VISIBILIDAD DE BOTONES --- */
+
+/* Botones en la cuadrícula y dentro del modal */
+button.btn-agregar, 
+button.btn-detalles, 
+.btn-agregar, 
+.btn-detalles,
+.botones-grid button,
+.modal-content button:not(.btn-cancelar) {
+    background-color: #28a745 !important; /* Verde sólido */
+    color: #ffffff !important;           /* Letras blancas */
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
 }
 
-.btn-vaciar:hover {
-  background-color: #c0392b;
-  filter: brightness(1.1);
+/* Botón flotante del carrito */
+button.btn-circulo, 
+.btn-circulo, 
+#btn-carrito-flotante {
+    background-color: #28a745 !important;
+    color: white !important;
+    width: 65px !important;
+    height: 65px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 3px solid white !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-/* --- MODALES --- */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 2000; }
-.modal-content { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
-.campo-notas textarea { width: 100%; height: 80px; margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: none; box-sizing: border-box; }
-.modal-footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
-.btn-cancelar { background: #6c757d; flex: 1; }
-.btn-confirmar { background: #28a745; flex: 1; }
+/* Forzar el icono dentro del carrito */
+.btn-circulo i, .btn-circulo mat-icon {
+    color: white !important;
+}
