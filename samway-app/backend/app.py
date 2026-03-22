@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from bson.objectid import ObjectId
+from datetime import datetime  # <--- SE AÑADIÓ ESTO
 
 app = Flask(__name__)
 
@@ -9,18 +10,16 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/samway_db"
 mongo = PyMongo(app)
 
-# CORS corregido para permitir todos los métodos necesarios
+# CORS configurado para permitir todos los métodos necesarios
 CORS(app, resources={r"/api/*": {"origins": "*"}},
       methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
-# Función para convertir el ObjectId de MongoDB a String para JSON
 def serialize_doc(doc):
     if doc and '_id' in doc:
         doc['_id'] = str(doc['_id'])
     return doc
 
-#pedidos
-
+# --- PEDIDOS ---
 @app.route('/api/pedidos', methods=['GET'])
 def get_pedidos():
     pedidos = [serialize_doc(p) for p in mongo.db.pedidos.find()]
@@ -44,39 +43,53 @@ def delete_pedido(id):
     mongo.db.pedidos.delete_one({'_id': ObjectId(id)})
     return jsonify({"msg": "Eliminado"}), 200
 
-#correos
+# --- NEWSLETTER ---
+@app.route('/api/newsletter', methods=['GET', 'POST'])
+def handle_newsletter():
+    if request.method == 'POST':
+        data = request.json
+        correo = data.get("correo") 
+        
+        if not correo:
+            return jsonify({"msg": "Correo requerido"}), 400
 
-@app.route('/api/newsletter', methods=['POST'])
-def add_newsletter():
-    data = request.json
-    # Opcional: Evitar correos duplicados
-    existente = mongo.db.newsletter.find_one({"email": data.get("email")})
-    if existente:
-        return jsonify({"msg": "Ya estas suscrito"}), 200
+        existente = mongo.db.newsletter.find_one({"correo": correo})
+        if existente:
+            return jsonify({"msg": "Ya estas suscrito"}), 400
+        
+        # --- CAMBIO AQUÍ: GUARDAR FECHA ---
+        data['fecha'] = datetime.now().strftime("%d/%m/%Y %H:%M")
+            
+        result = mongo.db.newsletter.insert_one(data)
+        return jsonify({"id": str(result.inserted_id)}), 201
     
-    result = mongo.db.newsletter.insert_one(data)
-    return jsonify({"id": str(result.inserted_id)}), 201
-
-@app.route('/api/newsletter', methods=['GET'])
-def get_newsletter():
+    # Si es GET
     emails = [serialize_doc(e) for e in mongo.db.newsletter.find()]
     return jsonify(emails), 200
 
-#nuevo producto -
-
-@app.route('/api/productos', methods=['POST'])
-def add_producto():
-    data = request.json
-    # Insertar el nuevo producto en la colección 'productos'
-    result = mongo.db.productos.insert_one(data)
-    return jsonify({"id": str(result.inserted_id), "msg": "Producto creado"}), 201
-
-@app.route('/api/productos', methods=['GET'])
-def get_productos_db():
-    # Esta ruta te servirá si luego quieres que el menú de Angular 
-    # se cargue desde la base de datos y no desde el array fijo
+# --- PRODUCTOS ---
+@app.route('/api/productos', methods=['GET', 'POST'])
+def handle_productos():
+    if request.method == 'POST':
+        data = request.json
+        result = mongo.db.productos.insert_one(data)
+        return jsonify({"id": str(result.inserted_id)}), 201
+    
+    # Si es GET
     productos = [serialize_doc(p) for p in mongo.db.productos.find()]
     return jsonify(productos), 200
+
+@app.route('/api/productos/<id>', methods=['PUT', 'DELETE'])
+def handle_producto_id(id):
+    if request.method == 'PUT':
+        data = request.json
+        if '_id' in data: del data['_id']
+        mongo.db.productos.update_one({'_id': ObjectId(id)}, {'$set': data})
+        return jsonify({"msg": "Actualizado"}), 200
+    
+    if request.method == 'DELETE':
+        mongo.db.productos.delete_one({'_id': ObjectId(id)})
+        return jsonify({"msg": "Eliminado"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

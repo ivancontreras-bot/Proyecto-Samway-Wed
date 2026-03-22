@@ -22,7 +22,6 @@
   </aside>
 
   <main class="content-body">
-
     <div *ngIf="seccion === 'pedidos'" class="card-white fade-in">
       <div class="header-flex">
         <h2>📦 Pedidos Recibidos</h2>
@@ -43,7 +42,7 @@
             <td><strong>{{p.nombre}}</strong><br><small>{{p.direccion}}</small></td>
             <td><div *ngFor="let item of p.productos">• {{item.nombre}}</div></td>
             <td class="price">${{p.total}}</td>
-            <td><span class="badge">{{p.estado}}</span></td>
+            <td><span class="badge" [ngClass]="p.estado">{{p.estado}}</span></td>
             <td>
               <button (click)="cambiarEstado(p._id, 'Entregado')" class="btn-check">✔</button>
               <button (click)="abrirModalBorrar(p._id)" class="btn-trash">🗑</button>
@@ -54,7 +53,6 @@
     </div>
 
     <div *ngIf="seccion === 'nuevo'" class="fade-in">
-      
       <div *ngIf="subSeccion === 'lista'" class="card-white">
         <div class="header-flex">
           <h2>🍔 Inventario de Productos</h2>
@@ -115,6 +113,10 @@
               <option value="Bebidas">Bebidas</option>
             </select>
           </div>
+          <div class="input-group full">
+            <label>Descripción</label>
+            <textarea [(ngModel)]="nuevoProd.descripcion" rows="3"></textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -123,16 +125,16 @@
       <h2>📧 Suscriptores</h2>
       <table class="tabla-pro">
         <thead>
-          <tr><th>Email</th><th>Fecha</th></tr>
+          <tr>
+            <th>Email</th>
+            <th>Fecha de Registro</th>
+          </tr>
         </thead>
         <tbody>
           <tr *ngFor="let n of newsletter">
-            <td>{{ n.correo }}</td>
-            <td>{{ n.fecha | date:'short' }}</td>
-          </tr>
+            <td>{{ n.correo }}</td> <td>{{ n.fecha }}</td> </tr>
         </tbody>
       </table>
     </div>
-
   </main>
 </div>

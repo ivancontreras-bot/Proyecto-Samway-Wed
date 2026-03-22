@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PedidosService } from '../../services/pedidos';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-pedidos',
@@ -12,23 +13,17 @@ import { PedidosService } from '../../services/pedidos';
   styleUrls: ['./pedidos.css']
 })
 export class PedidosComponent implements OnInit {
-  // --- LISTAS DE DATOS ---
   pedidos: any[] = [];
   newsletter: any[] = [];
-  productos: any[] = []; // Nueva lista para el inventario
-
-  // --- CONTROL DE VISTA ---
+  productos: any[] = [];
   seccion: string = 'pedidos'; 
-  subSeccion: string = 'lista'; // Controla si vemos la tabla o el formulario de productos
+  subSeccion: string = 'lista';
   tabActiva: string = 'info'; 
-
-  // --- ESTADOS DE EDICIÓN Y MODALES ---
   mostrarConfirmacion: boolean = false;
   idEliminar: string = '';
   editando: boolean = false;
   idProductoEditando: string = '';
 
-  // --- MODELO ---
   nuevoProd = {
     nombre: '',
     precio: 0,
@@ -44,12 +39,9 @@ export class PedidosComponent implements OnInit {
     this.cargarProductos();
   }
 
-  // --- NAVEGACIÓN ---
   cambiarSeccion(nombre: string) {
     this.seccion = nombre;
-    this.subSeccion = 'lista'; // Resetear a lista al cambiar de menú
-    this.tabActiva = 'info';
-    
+    this.subSeccion = 'lista';
     if (nombre === 'newsletter') this.cargarNewsletter();
     if (nombre === 'pedidos') this.cargarPedidos();
     if (nombre === 'nuevo') this.cargarProductos();
@@ -59,7 +51,6 @@ export class PedidosComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // --- GESTIÓN DE PRODUCTOS (CRUD) ---
   cargarProductos() {
     this.pedidosService.obtenerProductos().subscribe({
       next: (data) => this.productos = data,
@@ -69,12 +60,10 @@ export class PedidosComponent implements OnInit {
 
   abrirFormulario(producto?: any) {
     if (producto) {
-      // MODO EDICIÓN
       this.editando = true;
       this.idProductoEditando = producto._id;
-      this.nuevoProd = { ...producto }; // Clonamos los datos para no afectar la tabla original
+      this.nuevoProd = { ...producto };
     } else {
-      // MODO CREACIÓN
       this.editando = false;
       this.nuevoProd = { nombre: '', precio: 0, categoria: 'Pan Dulce', img: '', descripcion: '' };
     }
@@ -83,38 +72,67 @@ export class PedidosComponent implements OnInit {
 
   guardarProducto() {
     if (!this.nuevoProd.nombre || this.nuevoProd.precio <= 0) {
-      alert("Por favor, ingresa el nombre y un precio válido.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Datos incompletos',
+        text: 'Por favor, ingresa el nombre y un precio válido.',
+        confirmButtonColor: '#d4a373'
+      });
       return;
     }
 
     if (this.editando) {
-      // ACTUALIZAR EXISTENTE
       this.pedidosService.actualizarProducto(this.idProductoEditando, this.nuevoProd).subscribe({
         next: () => {
-          alert("¡Producto actualizado!");
+          Swal.fire({
+            icon: 'success',
+            title: '¡Actualizado!',
+            text: 'El producto se modificó correctamente.',
+            timer: 2000,
+            showConfirmButton: false
+          });
           this.cancelarAccion();
         },
-        error: () => alert("Error al actualizar")
+        error: () => Swal.fire('Error', 'No se pudo actualizar', 'error')
       });
     } else {
-      // CREAR NUEVO
       this.pedidosService.crearProducto(this.nuevoProd).subscribe({
         next: () => {
-          alert("¡Producto guardado exitosamente!");
+          Swal.fire({
+            icon: 'success',
+            title: '¡Guardado!',
+            text: 'Producto añadido al inventario.',
+            timer: 2000,
+            showConfirmButton: false
+          });
           this.cancelarAccion();
         },
-        error: () => alert("Hubo un error al guardar el producto.")
+        error: () => Swal.fire('Error', 'Hubo un error al guardar.', 'error')
       });
     }
   }
 
   eliminarProducto(id: string) {
-    if (confirm('¿Estás seguro de eliminar este producto del inventario?')) {
-      this.pedidosService.eliminarProducto(id).subscribe({
-        next: () => this.cargarProductos(),
-        error: (err) => console.error("Error al eliminar producto", err)
-      });
-    }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Eliminarás este producto del inventario.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d4a373',
+      cancelButtonColor: '#ff4d4d',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.pedidosService.eliminarProducto(id).subscribe({
+          next: () => {
+            this.cargarProductos();
+            Swal.fire('¡Eliminado!', 'El producto ha sido quitado.', 'success');
+          },
+          error: (err) => console.error("Error al eliminar", err)
+        });
+      }
+    });
   }
 
   cancelarAccion() {
@@ -123,7 +141,6 @@ export class PedidosComponent implements OnInit {
     this.cargarProductos();
   }
 
-  // --- GESTIÓN DE PEDIDOS Y NEWSLETTER ---
   cargarPedidos() {
     this.pedidosService.obtenerPedidos().subscribe({
       next: (data) => this.pedidos = data,

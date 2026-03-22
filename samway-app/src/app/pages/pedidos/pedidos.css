@@ -30,7 +30,7 @@
 }
 
 .sidebar-header span {
-  color: #d4a373; /* Dorado/Café de Samway */
+  color: #d4a373; 
 }
 
 .sidebar nav ul {
@@ -68,7 +68,7 @@
 /* --- CONTENIDO PRINCIPAL --- */
 .content-body {
   flex: 1;
-  margin-left: 260px; /* Espacio para la sidebar fixed */
+  margin-left: 260px;
   padding: 40px;
 }
 
@@ -140,6 +140,68 @@
 .btn-edit { background: #e9ecef; color: #333; }
 .btn-trash { background: #fee2e2; color: #dc2626; }
 .btn-check { background: #dcfce7; color: #166534; }
+
+/* --- AJUSTES FORMULARIO INVENTARIO --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group.full {
+  grid-column: span 2;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #5d4037;
+}
+
+.input-group input, .input-group select, .input-group textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.input-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.btn-save {
+  background: #5d4037;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: #ccc;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
 
 /* Animación */
 .fade-in {
