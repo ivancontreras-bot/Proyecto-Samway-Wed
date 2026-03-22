@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { PedidosService } from '../../services/pedidos';
 
 @Component({
@@ -11,41 +12,118 @@ import { PedidosService } from '../../services/pedidos';
   styleUrls: ['./pedidos.css']
 })
 export class PedidosComponent implements OnInit {
-  // --- VARIABLES DE DATOS ---
+  // --- LISTAS DE DATOS ---
   pedidos: any[] = [];
   newsletter: any[] = [];
-  seccion: string = 'pedidos'; 
-  
-  // --- VARIABLES DE CONTROL (MODAL) ---
-  mostrarConfirmacion = false;
-  idEliminar: string = '';
+  productos: any[] = []; // Nueva lista para el inventario
 
-  // --- MODELO PARA NUEVO PRODUCTO ---
+  // --- CONTROL DE VISTA ---
+  seccion: string = 'pedidos'; 
+  subSeccion: string = 'lista'; // Controla si vemos la tabla o el formulario de productos
+  tabActiva: string = 'info'; 
+
+  // --- ESTADOS DE EDICIÓN Y MODALES ---
+  mostrarConfirmacion: boolean = false;
+  idEliminar: string = '';
+  editando: boolean = false;
+  idProductoEditando: string = '';
+
+  // --- MODELO ---
   nuevoProd = {
     nombre: '',
     precio: 0,
-    categoria: 'nuevos',
+    categoria: 'Pan Dulce',
     img: '',
     descripcion: ''
   };
 
-  constructor(private pedidosService: PedidosService) {}
+  constructor(private pedidosService: PedidosService, private router: Router) {}
 
   ngOnInit(): void {
     this.cargarPedidos();
+    this.cargarProductos();
   }
 
   // --- NAVEGACIÓN ---
   cambiarSeccion(nombre: string) {
     this.seccion = nombre;
-    if (nombre === 'newsletter') {
-      this.cargarNewsletter();
-    } else if (nombre === 'pedidos') {
-      this.cargarPedidos();
+    this.subSeccion = 'lista'; // Resetear a lista al cambiar de menú
+    this.tabActiva = 'info';
+    
+    if (nombre === 'newsletter') this.cargarNewsletter();
+    if (nombre === 'pedidos') this.cargarPedidos();
+    if (nombre === 'nuevo') this.cargarProductos();
+  }
+
+  salir() {
+    this.router.navigate(['/login']);
+  }
+
+  // --- GESTIÓN DE PRODUCTOS (CRUD) ---
+  cargarProductos() {
+    this.pedidosService.obtenerProductos().subscribe({
+      next: (data) => this.productos = data,
+      error: (err) => console.error("Error al obtener productos:", err)
+    });
+  }
+
+  abrirFormulario(producto?: any) {
+    if (producto) {
+      // MODO EDICIÓN
+      this.editando = true;
+      this.idProductoEditando = producto._id;
+      this.nuevoProd = { ...producto }; // Clonamos los datos para no afectar la tabla original
+    } else {
+      // MODO CREACIÓN
+      this.editando = false;
+      this.nuevoProd = { nombre: '', precio: 0, categoria: 'Pan Dulce', img: '', descripcion: '' };
+    }
+    this.subSeccion = 'formulario';
+  }
+
+  guardarProducto() {
+    if (!this.nuevoProd.nombre || this.nuevoProd.precio <= 0) {
+      alert("Por favor, ingresa el nombre y un precio válido.");
+      return;
+    }
+
+    if (this.editando) {
+      // ACTUALIZAR EXISTENTE
+      this.pedidosService.actualizarProducto(this.idProductoEditando, this.nuevoProd).subscribe({
+        next: () => {
+          alert("¡Producto actualizado!");
+          this.cancelarAccion();
+        },
+        error: () => alert("Error al actualizar")
+      });
+    } else {
+      // CREAR NUEVO
+      this.pedidosService.crearProducto(this.nuevoProd).subscribe({
+        next: () => {
+          alert("¡Producto guardado exitosamente!");
+          this.cancelarAccion();
+        },
+        error: () => alert("Hubo un error al guardar el producto.")
+      });
     }
   }
 
-  // --- MÉTODOS DE CARGA ---
+  eliminarProducto(id: string) {
+    if (confirm('¿Estás seguro de eliminar este producto del inventario?')) {
+      this.pedidosService.eliminarProducto(id).subscribe({
+        next: () => this.cargarProductos(),
+        error: (err) => console.error("Error al eliminar producto", err)
+      });
+    }
+  }
+
+  cancelarAccion() {
+    this.subSeccion = 'lista';
+    this.editando = false;
+    this.cargarProductos();
+  }
+
+  // --- GESTIÓN DE PEDIDOS Y NEWSLETTER ---
   cargarPedidos() {
     this.pedidosService.obtenerPedidos().subscribe({
       next: (data) => this.pedidos = data,
@@ -55,57 +133,26 @@ export class PedidosComponent implements OnInit {
 
   cargarNewsletter() {
     this.pedidosService.obtenerNewsletter().subscribe({
-      next: (data) => {
-        console.log("Newsletter recibido:", data);
-        this.newsletter = data;
-      },
+      next: (data) => this.newsletter = data,
       error: (err) => console.error("Error newsletter:", err)
     });
   }
 
-  // --- GESTIÓN DE PRODUCTOS ---
-  guardarProducto() {
-    if (!this.nuevoProd.nombre || this.nuevoProd.precio <= 0) {
-      alert("Completa los datos del producto.");
-      return;
-    }
-    this.pedidosService.crearProducto(this.nuevoProd).subscribe({
-      next: () => {
-        alert("¡Producto guardado!");
-        this.nuevoProd = { nombre: '', precio: 0, categoria: 'nuevos', img: '', descripcion: '' };
-      },
-      error: () => alert("Error al guardar")
-    });
-  }
-
-  // --- GESTIÓN DE PEDIDOS (CAMBIO DE ESTADO) ---
   cambiarEstado(id: string, nuevoEstado: string) {
     this.pedidosService.actualizarEstado(id, nuevoEstado).subscribe(() => this.cargarPedidos());
   }
 
-  // --- ELIMINACIÓN (CON MODAL) ---
   abrirModalBorrar(id: string) {
     this.idEliminar = id;
     this.mostrarConfirmacion = true;
   }
 
-  // 👈 AQUÍ ESTABA EL ERROR: Reincorporamos la función que pedía el HTML
   confirmarEliminar() {
     if (this.idEliminar) {
-      this.pedidosService.eliminarPedido(this.idEliminar).subscribe({
-        next: () => {
-          this.mostrarConfirmacion = false; // Cerramos el modal
-          this.idEliminar = ''; 
-          this.cargarPedidos(); // Refrescamos la lista
-        },
-        error: (err) => console.error("Error al eliminar:", err)
+      this.pedidosService.eliminarPedido(this.idEliminar).subscribe(() => {
+        this.mostrarConfirmacion = false;
+        this.cargarPedidos();
       });
     }
-  }
-
-  // Por si tienes un botón de cancelar en el modal
-  cancelarEliminar() {
-    this.mostrarConfirmacion = false;
-    this.idEliminar = '';
   }
 }

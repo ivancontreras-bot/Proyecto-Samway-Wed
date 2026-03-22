@@ -1,19 +1,34 @@
 <div class="admin-container">
-  <div class="admin-nav">
-    <button (click)="seccion = 'pedidos'" [class.active]="seccion === 'pedidos'">Gestión Pedidos</button>
-    <button (click)="seccion = 'newsletter'; cargarNewsletter()" [class.active]="seccion === 'newsletter'">Newsletter</button>
-    <button (click)="seccion = 'nuevo'" [class.active]="seccion === 'nuevo'">+ Nuevo Producto</button>
-  </div>
-
-  <hr>
-
-  <div *ngIf="seccion === 'pedidos'">
-    <div class="header-admin">
-      <h2>📦 Pedidos Recibidos</h2>
-      <button class="btn-actualizar" (click)="cargarPedidos()">🔄 Refrescar</button>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>SAMWAY <span>ADMIN</span></h2>
     </div>
-    <div class="tabla-wrapper">
-      <table class="tabla">
+    <nav>
+      <ul>
+        <li (click)="cambiarSeccion('pedidos')" [class.active]="seccion === 'pedidos'">
+          <i class="fas fa-shopping-basket"></i> Pedidos
+        </li>
+        <li (click)="cambiarSeccion('nuevo')" [class.active]="seccion === 'nuevo'">
+          <i class="fas fa-hamburger"></i> Inventario
+        </li>
+        <li (click)="cambiarSeccion('newsletter')" [class.active]="seccion === 'newsletter'">
+          <i class="fas fa-envelope"></i> Newsletter
+        </li>
+        <li (click)="salir()" class="btn-exit">
+          <i class="fas fa-sign-out-alt"></i> Salir
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content-body">
+
+    <div *ngIf="seccion === 'pedidos'" class="card-white fade-in">
+      <div class="header-flex">
+        <h2>📦 Pedidos Recibidos</h2>
+        <button class="btn-refresh" (click)="cargarPedidos()">🔄 Actualizar</button>
+      </div>
+      <table class="tabla-pro">
         <thead>
           <tr>
             <th>Cliente</th>
@@ -26,53 +41,98 @@
         <tbody>
           <tr *ngFor="let p of pedidos">
             <td><strong>{{p.nombre}}</strong><br><small>{{p.direccion}}</small></td>
+            <td><div *ngFor="let item of p.productos">• {{item.nombre}}</div></td>
+            <td class="price">${{p.total}}</td>
+            <td><span class="badge">{{p.estado}}</span></td>
             <td>
-              <div *ngFor="let item of p.productos">• {{item.nombre}}</div>
-            </td>
-            <td>${{p.total}}</td>
-            <td><span class="badge-estado">{{p.estado}}</span></td>
-            <td>
-              <button (click)="cambiarEstado(p._id, 'Entregado')" class="btn-listo">✔</button>
-              <button (click)="abrirModalBorrar(p._id)" class="btn-borrar">🗑</button>
+              <button (click)="cambiarEstado(p._id, 'Entregado')" class="btn-check">✔</button>
+              <button (click)="abrirModalBorrar(p._id)" class="btn-trash">🗑</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
 
-  <div *ngIf="seccion === 'newsletter'">
-    <h2>📧 Lista de Correos</h2>
-    <div class="tabla-wrapper">
-      <table class="tabla">
+    <div *ngIf="seccion === 'nuevo'" class="fade-in">
+      
+      <div *ngIf="subSeccion === 'lista'" class="card-white">
+        <div class="header-flex">
+          <h2>🍔 Inventario de Productos</h2>
+          <button class="btn-add" (click)="abrirFormulario()">+ Nuevo Producto</button>
+        </div>
+        <table class="tabla-pro">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prod of productos">
+              <td><img [src]="prod.img" class="img-mini" alt="prod"></td>
+              <td><strong>{{prod.nombre}}</strong></td>
+              <td>{{prod.categoria}}</td>
+              <td class="price">${{prod.precio}}</td>
+              <td>
+                <button (click)="abrirFormulario(prod)" class="btn-edit">✏</button>
+                <button (click)="eliminarProducto(prod._id)" class="btn-trash">🗑</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="subSeccion === 'formulario'" class="product-editor card-white">
+        <div class="editor-header">
+          <h3>{{ editando ? '📝 Editando:' : '✨ Nuevo:' }} <span>{{ nuevoProd.nombre || 'Producto' }}</span></h3>
+          <div class="actions">
+            <button class="btn-cancel" (click)="cancelarAccion()">Cancelar</button>
+            <button class="btn-save" (click)="guardarProducto()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Nombre</label>
+            <input type="text" [(ngModel)]="nuevoProd.nombre">
+          </div>
+          <div class="input-group">
+            <label>Precio</label>
+            <input type="number" [(ngModel)]="nuevoProd.precio">
+          </div>
+          <div class="input-group full">
+            <label>Imagen (Ruta)</label>
+            <input type="text" [(ngModel)]="nuevoProd.img">
+          </div>
+          <div class="input-group full">
+            <label>Categoría</label>
+            <select [(ngModel)]="nuevoProd.categoria">
+              <option value="Pan Dulce">Pan Dulce</option>
+              <option value="Sandwich">Sandwich</option>
+              <option value="Bebidas">Bebidas</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="seccion === 'newsletter'" class="card-white fade-in">
+      <h2>📧 Suscriptores</h2>
+      <table class="tabla-pro">
         <thead>
-          <tr><th>Correo del Cliente</th></tr>
+          <tr><th>Email</th><th>Fecha</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let n of newsletter">
-            <td>{{ n.email }}</td>
+            <td>{{ n.correo }}</td>
+            <td>{{ n.fecha | date:'short' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
 
-  <div *ngIf="seccion === 'nuevo'" class="form-container">
-    <h2>✨ Subir Nuevo Producto</h2>
-    <div class="form-nuevo">
-      <input type="text" [(ngModel)]="nuevoProd.nombre" placeholder="Nombre del producto">
-      <input type="number" [(ngModel)]="nuevoProd.precio" placeholder="Precio ($)">
-      <textarea [(ngModel)]="nuevoProd.descripcion" placeholder="Descripción corta"></textarea>
-      <input type="text" [(ngModel)]="nuevoProd.img" placeholder="Ruta de imagen (ej: /fotos/nuevo.jpg)">
-      <button (click)="guardarProducto()" class="btn-send">Guardar en Base de Datos</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" *ngIf="mostrarConfirmacion">
-  <div class="modal-confirm-box">
-    <h3>¿Eliminar pedido?</h3>
-    <button (click)="confirmarEliminar()" class="btn-confirm-del">Eliminar</button>
-    <button (click)="mostrarConfirmacion = false">Cancelar</button>
-  </div>
+  </main>
 </div>

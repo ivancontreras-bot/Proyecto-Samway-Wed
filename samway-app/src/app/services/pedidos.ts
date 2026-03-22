@@ -31,7 +31,6 @@ export class PedidosService {
   }
 
   // --- GESTIÓN DE NEWSLETTER ---
-  // 👈 ESTA ES LA QUE LE FALTABA A TU FOOTER
   registrarNewsletter(correo: string): Observable<any> {
     return this.http.post(this.urlNewsletter, { correo });
   }
@@ -40,13 +39,24 @@ export class PedidosService {
     return this.http.get(this.urlNewsletter);
   }
 
-  // --- GESTIÓN DE PRODUCTOS ---
+  // --- GESTIÓN DE PRODUCTOS (CRUD COMPLETO) ---
+  
+  // Para que el Menú Principal cargue los datos de la base de datos
+  obtenerProductos(): Observable<any> {
+    return this.http.get(this.urlProductos);
+  }
+
   crearProducto(producto: any): Observable<any> {
     return this.http.post(this.urlProductos, producto);
   }
 
-  // Para que el Menú Principal cargue los datos de la base de datos
-  obtenerProductos(): Observable<any> {
-    return this.http.get(this.urlProductos);
+  // 🛠️ MÉTODO NUEVO: Actualiza un producto existente (Soluciona error en Ln 92)
+  actualizarProducto(id: string, producto: any): Observable<any> {
+    return this.http.put(`${this.urlProductos}/${id}`, producto);
+  }
+
+  // 🗑️ MÉTODO NUEVO: Elimina un producto por ID (Soluciona error en Ln 113)
+  eliminarProducto(id: string): Observable<any> {
+    return this.http.delete(`${this.urlProductos}/${id}`);
   }
 }
