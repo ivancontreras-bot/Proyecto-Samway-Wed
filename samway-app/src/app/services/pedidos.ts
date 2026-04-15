@@ -6,13 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PedidosService {
-  // --- CAMBIO DE URLS PARA PRODUCCIÓN ---
-  // Cuando Render te de tu URL, sustituye 'tu-app-en-render.onrender.com' por la real.
-  private apiBase = 'https://tu-app-en-render.onrender.com/api';
-
-  private urlPedidos = `${this.apiBase}/pedidos`;
-  private urlNewsletter = `${this.apiBase}/newsletter`;
-  private urlProductos = `${this.apiBase}/productos`;
+  // --- LAS URLS ACTUALIZADAS CON TU DIRECCIÓN DE RENDER ---
+  private urlPedidos = 'https://samway.onrender.com/api/pedidos';
+  private urlNewsletter = 'https://samway.onrender.com/api/newsletter';
+  private urlProductos = 'https://samway.onrender.com/api/productos';
 
   constructor(private http: HttpClient) { }
 
