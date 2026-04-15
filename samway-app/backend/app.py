@@ -2,24 +2,29 @@ from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from bson.objectid import ObjectId
-from datetime import datetime  # <--- SE AÑADIÓ ESTO
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 
-# Configuración de base de datos
-app.config["MONGO_URI"] = "mongodb://localhost:27017/samway_db"
+# --- CONFIGURACIÓN DE BASE DE DATOS ---
+# Usamos tu contraseña y cadena de conexión de MongoDB Atlas
+atlas_uri = "mongodb+srv://Shiza:NSJ2mrKkEbhOc2n9@samway.dpiqvdr.mongodb.net/samway_db?retryWrites=true&w=majority&appName=Samway"
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI", atlas_uri)
 mongo = PyMongo(app)
 
-# CORS configurado para permitir todos los métodos necesarios
+# --- CONFIGURACIÓN DE CORS ---
+# Permite que tu app de Angular (Netlify) se comunique con este servidor
 CORS(app, resources={r"/api/*": {"origins": "*"}},
       methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 def serialize_doc(doc):
+    """Convierte el _id de MongoDB en un string para que Angular lo entienda."""
     if doc and '_id' in doc:
         doc['_id'] = str(doc['_id'])
     return doc
 
-# --- PEDIDOS ---
+# --- RUTAS DE PEDIDOS ---
 @app.route('/api/pedidos', methods=['GET'])
 def get_pedidos():
     pedidos = [serialize_doc(p) for p in mongo.db.pedidos.find()]
@@ -43,23 +48,20 @@ def delete_pedido(id):
     mongo.db.pedidos.delete_one({'_id': ObjectId(id)})
     return jsonify({"msg": "Eliminado"}), 200
 
-# --- NEWSLETTER ---
+# --- RUTAS DE NEWSLETTER ---
 @app.route('/api/newsletter', methods=['GET', 'POST'])
 def handle_newsletter():
     if request.method == 'POST':
         data = request.json
         correo = data.get("correo") 
-        
         if not correo:
             return jsonify({"msg": "Correo requerido"}), 400
-
+        
         existente = mongo.db.newsletter.find_one({"correo": correo})
         if existente:
-            return jsonify({"msg": "Ya estas suscrito"}), 400
+            return jsonify({"msg": "Ya estás suscrito"}), 400
         
-        # --- CAMBIO AQUÍ: GUARDAR FECHA ---
         data['fecha'] = datetime.now().strftime("%d/%m/%Y %H:%M")
-            
         result = mongo.db.newsletter.insert_one(data)
         return jsonify({"id": str(result.inserted_id)}), 201
     
@@ -67,7 +69,7 @@ def handle_newsletter():
     emails = [serialize_doc(e) for e in mongo.db.newsletter.find()]
     return jsonify(emails), 200
 
-# --- PRODUCTOS ---
+# --- RUTAS DE PRODUCTOS (INVENTARIO) ---
 @app.route('/api/productos', methods=['GET', 'POST'])
 def handle_productos():
     if request.method == 'POST':
@@ -83,7 +85,8 @@ def handle_productos():
 def handle_producto_id(id):
     if request.method == 'PUT':
         data = request.json
-        if '_id' in data: del data['_id']
+        if '_id' in data: 
+            del data['_id']
         mongo.db.productos.update_one({'_id': ObjectId(id)}, {'$set': data})
         return jsonify({"msg": "Actualizado"}), 200
     
@@ -91,5 +94,8 @@ def handle_producto_id(id):
         mongo.db.productos.delete_one({'_id': ObjectId(id)})
         return jsonify({"msg": "Eliminado"}), 200
 
+# --- CONFIGURACIÓN DE ARRANQUE ---
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Usamos el puerto asignado por el servidor (Render) o el 5000 por defecto
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
