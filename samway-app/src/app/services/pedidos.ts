@@ -6,10 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PedidosService {
-  // URLs base para las distintas colecciones en Flask
-  private urlPedidos = 'http://127.0.0.1:5000/api/pedidos';
-  private urlNewsletter = 'http://127.0.0.1:5000/api/newsletter';
-  private urlProductos = 'http://127.0.0.1:5000/api/productos';
+  // --- CAMBIO DE URLS PARA PRODUCCIÓN ---
+  // Cuando Render te de tu URL, sustituye 'tu-app-en-render.onrender.com' por la real.
+  private apiBase = 'https://tu-app-en-render.onrender.com/api';
+
+  private urlPedidos = `${this.apiBase}/pedidos`;
+  private urlNewsletter = `${this.apiBase}/newsletter`;
+  private urlProductos = `${this.apiBase}/productos`;
 
   constructor(private http: HttpClient) { }
 
@@ -40,8 +43,6 @@ export class PedidosService {
   }
 
   // --- GESTIÓN DE PRODUCTOS (CRUD COMPLETO) ---
-  
-  // Para que el Menú Principal cargue los datos de la base de datos
   obtenerProductos(): Observable<any> {
     return this.http.get(this.urlProductos);
   }
@@ -50,12 +51,10 @@ export class PedidosService {
     return this.http.post(this.urlProductos, producto);
   }
 
-  // 🛠️ MÉTODO NUEVO: Actualiza un producto existente (Soluciona error en Ln 92)
   actualizarProducto(id: string, producto: any): Observable<any> {
     return this.http.put(`${this.urlProductos}/${id}`, producto);
   }
 
-  // 🗑️ MÉTODO NUEVO: Elimina un producto por ID (Soluciona error en Ln 113)
   eliminarProducto(id: string): Observable<any> {
     return this.http.delete(`${this.urlProductos}/${id}`);
   }
